@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title>线程池</title>
+      <link href="/2017/11/15/thread-pool/"/>
+      <url>/2017/11/15/thread-pool/</url>
+      
+        <content type="html"><![CDATA[<p>为了避免频繁的创建和销毁线程带来的开销，我们可以使用线程池，让线程得以复用。JDK为我们提供了之方面的支持。类图如下：</p><img src="/2017/11/15/thread-pool/thread-pool.png"><h4 id="Executor"><a href="#Executor" class="headerlink" title="Executor"></a>Executor</h4><p>线程池的顶级接口，虽然该接口是顶级接口，但是它里面只有一个 void execute(Runnable command); 方法，所以它可以被看做是一个命令执行器，而不是一个线程池。</p><h4 id="ExecutorService"><a href="#ExecutorService" class="headerlink" title="ExecutorService"></a>ExecutorService</h4><p>它是真正的线程池接口，该接口内声明方法如下图，里面已经包含了线程池的方法。<br><img src="/2017/11/15/thread-pool/thread-pool-executor-service.png"></p><h4 id="ScheduledExecutorService"><a href="#ScheduledExecutorService" class="headerlink" title="ScheduledExecutorService"></a>ScheduledExecutorService</h4><p>它在 ExecutorService 的基础上扩展了定时任务和周期性任务 的功能，如下方法。</p><pre><code>/**在指定的时间后执行任务*/public ScheduledFuture&lt;?&gt; schedule(Runnable command, long delay, TimeUnit unit);/**在指定的时间后执行一个 callable，并返回ScheduledFuture*/public &lt;V&gt; ScheduledFuture&lt;V&gt; schedule(Callable&lt;V&gt; callable, long delay, TimeUnit unit);/**在指定的延时 initialDelay 后开始每隔 period 时间就执行一次 command，如果 任务执行的时间超过了 period，则在该任务执行完毕后马上开始下一次执行，不会出现任务堆叠的情况。*/public ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit);/**在指定的延时 initialDelay 后开始周期性的执行任务 command，每隔任务调度（上一个任务执行完毕到下一个任务开始）之间的间隔为 delay*/public ScheduledFuture&lt;?&gt; scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit);</code></pre><h4 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h4><p>线程池的默认实现</p><h4 id="Executors"><a href="#Executors" class="headerlink" title="Executors"></a>Executors</h4><p>类似一个工厂类，通过该类里面的静态方法可以方便的得到有特定功能的线程池，方法如下：</p><pre><code>/**该方法返回一个固定线程数量的线程池，池中的线程数量始终不变。当有新任务提交时，如果池中有空闲的线程，则立即执行，否则就把该任务缓存到任务队列LinkedBlockingQueue中，等到后面又空闲线程时，再执行该任务。*/public static ExecutorService newFixedThreadPool(int nThread)/**该方法返回一个只有一个线程的线程池。如果有新的任务被提交时，且线程不空闲的时候，该任务会被缓存带一个任务队列LinkedBlockingQueue中，等到线程空闲时候再执行。*/public static ExecutorService newSingleThreadExecutor()/**该方法返回一个可以根据实际情况调整的线程数量的线程池，线程池里面线程的数量不确定。当有新的任务提交时，如果有空闲的线程，则用空闲的线程来执行该任务，否则就会创建一个新的线程来执行任务。*/public static ExecutorService newCachedThreadPool()/**该方法返回一个数量为 1 的ScheduledExecutorService 线程池对象。该对象可以支持定时任务。*/public static ScheduledExecutorService newSingleThreadScheduledExecutor()/**该方法返回一个指定线程数量的 ScheduledExecutorService 对象。*/public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize);</code></pre><h5 id="Executors内部的实现"><a href="#Executors内部的实现" class="headerlink" title="Executors内部的实现:"></a>Executors内部的实现:</h5><pre><code>public ThreadPoolExecutor(int corePoolSize,                            int maximumPoolSize,                          long keepAliveTime,                          TimeUnit unit,                          BlockingQueue&lt;Runnable&gt; workQueue,                          ThreadFactory threadFactory,                          RejectedExecutionHandler handler)</code></pre><p>参数说明：</p><ul><li>corePoolSize ：指定了线程池中的线程数量</li><li>maximumPoolSize ：制定了线程池中的最大线程数量</li><li>keepAliveTime ：当线程池的数量超过 corePoolSize 时，在超过keepAliveTime后如果这些多余的线程空闲，就会被回收</li><li>unit ：时间单位</li><li>workQueue ：任务队列，当心提交的任务来不及执行的时候，就会被缓存到该队列</li><li>threadFactory ： 线程工厂，用于创建线程</li><li>handler ：拒绝策略。当任务来不及执行时，如何拒绝任务</li></ul><h5 id="线程池任务队列（BlockingQueue-workQueue）的种类和各自的特点："><a href="#线程池任务队列（BlockingQueue-workQueue）的种类和各自的特点：" class="headerlink" title="线程池任务队列（BlockingQueue workQueue）的种类和各自的特点："></a>线程池任务队列（BlockingQueue<runnable> workQueue）的种类和各自的特点：</runnable></h5><h6 id="直接提交的队列（SynchronousQueue）"><a href="#直接提交的队列（SynchronousQueue）" class="headerlink" title="直接提交的队列（SynchronousQueue）"></a>直接提交的队列（SynchronousQueue）</h6><p>SynchronousQueue是一种特殊的 BlockQueue，它没有容量，每一个插入操作都要等待一个相应的删除操作，每一个删除操作都必须等待一个相应的插入操作。当任务队列使用 SynchronousQueue 时，任务不会被缓存到该队列中，而总是提交给线程执行，如果没有空闲线程，或者线程数量已经到了最大值，就回执行拒绝策略。所以在使用 SynchronousQueue 的时候，一般要设置比较大的 maxxmumPoolSize，否则会很容易执行拒绝策略。</p><h6 id="有界的任务队列（ArrayBlockingQueue）"><a href="#有界的任务队列（ArrayBlockingQueue）" class="headerlink" title="有界的任务队列（ArrayBlockingQueue）"></a>有界的任务队列（ArrayBlockingQueue）</h6><p>使用ArrayBlockingQueue作为任务队列时候，要指定一个队列的最大值用于构造ArrayBlockingQueue，当有新的任务提交且没有空闲线程，如果线程池数量小于corePoolSize，则创建新的线程用于执行任务，否则就将任务缓存到任务队列中，如果任务队列已满，且线程池数量小于 maximumPoolSize 的时候，创建新的线程用于执行任务，否则执行拒绝策略。（只有当任务队列满的时候，才会将线程数量提升到 corePoolSize 之上）</p><h6 id="无界的任务队列（LinkedBlockingQueue）"><a href="#无界的任务队列（LinkedBlockingQueue）" class="headerlink" title="无界的任务队列（LinkedBlockingQueue）"></a>无界的任务队列（LinkedBlockingQueue）</h6><p>当有新的任务提交的时候，如果线程池内线程数量不到 corePoolSize，则创建新的线程执行任务，否则就讲任务缓存到队列中，由于队列是无界的，所以线程池数量到达 corePoolSzie 后就不会再增加了，如果有很多任务不断提交，且任务执行速度跟不上任务提交的速度的话，会造成队列里面的任务不断积累，很容易耗尽系统内存。</p><h6 id="优先任务队列（PriorityBlockingQueue）"><a href="#优先任务队列（PriorityBlockingQueue）" class="headerlink" title="优先任务队列（PriorityBlockingQueue）"></a>优先任务队列（PriorityBlockingQueue）</h6><p>PriorityBlockingQueue是一个特殊的无界队列，但是它可以可以根据任务的优先级进行排序，让优先级高的任务优先执行。</p><h5 id="线程池拒绝策略："><a href="#线程池拒绝策略：" class="headerlink" title="线程池拒绝策略："></a>线程池拒绝策略：</h5><h6 id="AbortPolicy"><a href="#AbortPolicy" class="headerlink" title="AbortPolicy"></a>AbortPolicy</h6><p>该策略直接抛出异常 RejectedExecutionException ，阻止系统正常工作。 实现类为 public static class AbortPolicy implements RejectedExecutionHandler</p><h6 id="CallerRunsPolicy"><a href="#CallerRunsPolicy" class="headerlink" title="CallerRunsPolicy"></a>CallerRunsPolicy</h6><p>只要线程池未关闭，该策略就在调用者的线程中执行该任务，这样很可能造成系统的性能急剧下降。实现类为：public static class CallerRunsPolicy implements RejectedExecutionHandler</p><h6 id="DiscardOldestPolicy"><a href="#DiscardOldestPolicy" class="headerlink" title="DiscardOldestPolicy"></a>DiscardOldestPolicy</h6><p>丢弃最老的一个任务，不做任何的处理。实现类为：public static class DiscardOldestPolicy implements RejectedExecutionHandler</p><h6 id="DiscardPolicy"><a href="#DiscardPolicy" class="headerlink" title="DiscardPolicy"></a>DiscardPolicy</h6><p>直接丢弃无法处理的任务，不做任何处理。实现类为： public static class DiscardPolicy implements RejectedExecutionHandler</p><h5 id="线程工厂（ThreadFactory）"><a href="#线程工厂（ThreadFactory）" class="headerlink" title="线程工厂（ThreadFactory）"></a>线程工厂（ThreadFactory）</h5><p>线程工厂可以让我们自定义线程，通过为线程设置特定的名称，让我们后续的调试更方便。也可以自由的设置线程的状态和优先级等等。示例代码如下:</p><pre><code>/**可命名线程组 线程工厂*/public class NamedThreadFactory implements ThreadFactory {    final ThreadGroup group;    final AtomicInteger threadNumber = new AtomicInteger(1);    final String namePrefix;    public NamedThreadFactory(ThreadGroup group, String name) {        this.group = group;        namePrefix = group.getName() + &quot;:&quot; + name;    }    public Thread newThread(Runnable r) {        Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);        return t;    }}</code></pre><h5 id="线程池出错时候的异常堆栈处理"><a href="#线程池出错时候的异常堆栈处理" class="headerlink" title="线程池出错时候的异常堆栈处理"></a>线程池出错时候的异常堆栈处理</h5><ul><li>当使用 execute() 方法提交的任务在执行的时候出现异常，只会打印出执行该任务的线程的堆栈信息，而不会打印出任务提交线程的堆栈信息。</li><li>使用 submit() 方法提交的任务在执行的时候出现异常，如果不 get() 的haunted，是不会打印出任何异常信息的，但也只会得到和execute() 方法一样的异常信息。</li></ul><p>如果想要得到完整的堆栈异常信息，则需要将ThreadPoolExecutor 进行扩展，在提交任务的时候传入将提交任务的线程的堆栈信息保存起来。。如下代码：</p><pre><code>public TraceThreadPoolExecutor extends ThreadPollExecutor{     ......    //略    ......    @Override    public void execute(Runnable command) {        super.execute(wrap(command, new Exception(&quot;exception stack trace&quot;), Thread.currentThread().getName()));    }    @Override    public Future&lt;?&gt; submit(Runnable task) {        return super.submit(wrap(task, new Exception(&quot;exception stack trace&quot;), Thread.currentThread().getName()));    }    /**    clientStack 记录提交的线程的堆栈信息    */    private Runnable wrap(final Runnable command, final Exception clientStack, String threadName){        return new Runnable() {            @Override                    public void run() {                try{                    command.run();                }catch (Exception e){                    clientStack.printStackTrace();                    throw e;                }            }        };    }    ......    //略    ......}</code></pre><p>上述代码中，wrap 方法被execute 和 submit 方法调用， 传入了一个 exception 信息，该exception 记录了提交任务线程的堆栈信息，当任务执行出异常的时候，就打印出该堆栈信息，从而可以定位到任务是在哪个位置被提交的，很方便bug的排查和修改。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>并发包 - ReentrantLock</title>
+      <link href="/2017/11/14/lock-reentrantLock/"/>
+      <url>/2017/11/14/lock-reentrantLock/</url>
+      
+        <content type="html"><![CDATA[<p>谈到锁，就应该马上想起 synchronized 关键字，他可以用到方法上，也可以用于代码块上，作用都是获取锁。它的加锁和释放锁都是由jvm自动完成的，虽然使用方便，但是所以没有那么灵活，下面我们来说说重入锁。</p><p>实现：<code>public class ReentrantLock implements Lock, java.io.Serializable</code></p><h5 id="与-synchronized-的区别"><a href="#与-synchronized-的区别" class="headerlink" title="与 synchronized 的区别"></a>与 synchronized 的区别</h5><table><thead><tr><th style="text-align:left"><strong>序号</strong></th><th><strong>synchronized</strong></th><th><strong>ReentrantLock</strong></th></tr></thead><tbody><tr><td style="text-align:left">1</td><td>锁的获取的释放由JVM控制</td><td>加锁和释放完全有用户控制</td></tr><tr><td style="text-align:left">2</td><td>无法响应中断</td><td>通过 <code>lockInterruptibly()</code> 方法可以响应中断</td></tr><tr><td style="text-align:left">3</td><td>获取不到锁的时候会一直等待</td><td>通过 <code>tryLock(long timeout, TimeUnit unit)</code>方法可以在等待指定时间后超时通过 <code>tryLock()</code> 方法尝试获取锁，在获取不到的时候直接返回 false</td></tr><tr><td style="text-align:left">4</td><td>无对应的配套操作</td><td>有 <code>Condition</code> 作为搭档</td></tr></tbody></table><h5 id="标准用法"><a href="#标准用法" class="headerlink" title="标准用法"></a>标准用法</h5><pre><code>ReentrantLock lock = new ReentrantLock();try{    lock.lock();} //一定要在finally里面unlockfinally{  lock.unlock();}</code></pre><p>之所以叫做重入，是因为这种在一个线程内是可以反复进入的，也就是说可以 lock 多次，当然也要在 finally 块里面unlock 相同的次数</p><h5 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h5><p>对于synchronized 一直等待锁来说，可重入锁提供了所中断的机制，当一个线程由于某种原因（死锁）迟迟获取不到锁的时候，可以通过中断线程（interrupt 方法）取消对锁的请求，这对于解决死锁很有帮助。</p><pre><code>import java.util.concurrent.locks.ReentrantLock;public class TestLockInterruptibly {    private static ReentrantLock lock1 = new ReentrantLock();    private static ReentrantLock lock2 = new ReentrantLock();    public static void main(String[] args) throws InterruptedException {        Thread t1 = new Thread(new TestThread(true), &quot;线程1&quot;);        Thread t2 = new Thread(new TestThread(false), &quot;线程2&quot;);        t1.start();        //为演示效果而休眠        Thread.sleep(50);        t2.start();        //主线程休眠3秒        Thread.sleep(3000);        //t2发送中断，让等待lock1的t2响应该中断，取消对lock1的请求        //t2.interrupt();    }    static class TestThread implements Runnable{        //构造        public TestThread(boolean flag) {            this.flag = flag;        }        //true 先获取 lock1，再获取lock2        //false 先获取 lock2，再获取lock1        private boolean flag;        @Override        public void run() {            try{                if(flag) {                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock1 &quot;);                    lock1.lockInterruptibly();                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock1&quot;);                    try {                        Thread.sleep(500);                    } catch (InterruptedException e) {                        e.printStackTrace();                    }                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock2 &quot;);                    lock2.lockInterruptibly();                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock2&quot;);                } else {                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock2 &quot;);                    lock2.lockInterruptibly();                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock2&quot;);                    try {                        Thread.sleep(500);                    } catch (InterruptedException e) {                        e.printStackTrace();                    }                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock1 &quot;);                    lock1.lockInterruptibly();                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock1&quot;);                }            } catch (InterruptedException e) {                e.printStackTrace();            } finally {                if(lock1.isHeldByCurrentThread()) {                    lock1.unlock();                }                if(lock2.isHeldByCurrentThread()){                    lock2.unlock();                }                System.out.println(Thread.currentThread().getName() + &quot;  &quot; + &quot;end...&quot;);            }        }    }}</code></pre><p>当t2不中断的时候，就回产生死锁，t1 等待 t2 持有的lock2， t2 等待 t1持有的lock1，结果如下图：</p><img src="/2017/11/14/lock-reentrantLock/lock-ReentrantLock-dead-lock.png"><p>当 t2 中断的时候，发现t1 和 t2 都可以的退出，死锁被解决了</p><img src="/2017/11/14/lock-reentrantLock/lock-ReentrantLock-dead-lock-resolve.png"><h5 id="tryLock"><a href="#tryLock" class="headerlink" title="tryLock"></a>tryLock</h5><p>上述的响应中断需要我们主动调用 中断方法 interrupt，使用tryLock 可以让线程限时等待，在指定时间内获取到锁后返回true，否则返回false，总之不会造成死锁。</p><h5 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h5><p>还记得 与 synchronized 配套使用的 wait 和 notify，notifyAll 方法吗？  类似的重入提供了Condition ，和 lock 配套实现类似的操作。</p><p>通过 Lock 的 newCondition() 方法可以生意一个与当前锁绑定的 Condition 对象，再利用如下的方法，可以实现类似 wait 和 notify的操作。</p><p>下面是一个生产者消费者的例子：</p><pre><code>import java.util.concurrent.locks.Condition;import java.util.concurrent.locks.ReentrantLock;public class TestCondition {    private static ReentrantLock lock = new ReentrantLock();    private static Condition produceGood = lock.newCondition();    private static Condition consumeGood = lock.newCondition();    /* 是否有物品 */    private static boolean hasGood = false;    public static void main(String[] args) {        Thread producer = new Thread(new Producer(),&quot;生产者&quot;);        Thread consumer = new Thread(new Consumer(),&quot;消费者&quot;);        producer.start();        consumer.start();    }    /**生产者*/    static class Producer implements Runnable {        @Override        public void run() {            while(true) {                try{                    lock.lock();                    //如果有生产                    if (hasGood) {                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot; 物品等待被消费..&quot;);                        try {                            //等待物品被消费后，被消费者唤醒                            consumeGood.await();                        } catch (InterruptedException e) {                            e.printStackTrace();                        }                    }                    //没有物品，生产者则生产物品                    else {                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot; 生产了一个物品...&quot;);                        hasGood = true;                        //唤醒正在等待的消费者开始消费                        produceGood.signal();                    }                } finally {                    lock.unlock();                }                try {                    Thread.sleep(500);                } catch (InterruptedException e) {                    e.printStackTrace();                }            }        }    }    /*消费者*/    static class Consumer implements Runnable{        @Override        public void run() {            while (true) {                try {                    lock.lock();                    //如果有物品                    if(hasGood) {                        //消费物品                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot; 消费了物品...&quot;);                        hasGood = false;                        //唤醒等待生产者开始生产                        consumeGood.signal();                    }                    //没有物品                    else {                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot;等待物品被生产..&quot;);                        try {                            //等待被生产者唤醒                            produceGood.await();                        } catch (InterruptedException e) {                            e.printStackTrace();                        }                    }                } finally {                    lock.unlock();                }                try {                    Thread.sleep(500);                } catch (InterruptedException e) {                    e.printStackTrace();                }            }        }    }}</code></pre><p>当然，也可以用 wait 和 notify实现</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>单例模式</title>
+      <link href="/2017/11/12/design-pattern-singleton/"/>
+      <url>/2017/11/12/design-pattern-singleton/</url>
+      
+        <content type="html"><![CDATA[<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>一个类有且仅有一个实例，并且自行实例化想整个系统提供。</p><h3 id="要点："><a href="#要点：" class="headerlink" title="要点："></a>要点：</h3><ol><li>构造方法私有化</li><li>多线程环境下要确保实例的唯一性</li><li>使用一个静态方法为外部提供该实例的访问</li></ol><h3 id="实现方式（5个）："><a href="#实现方式（5个）：" class="headerlink" title="实现方式（5个）："></a>实现方式（5个）：</h3><h4 id="1、懒汉式"><a href="#1、懒汉式" class="headerlink" title="1、懒汉式"></a>1、懒汉式</h4><pre><code>/** * 懒汉式 */public class SingletonLazy {    //静态实例    private static SingletonLazy instance = null;    /**     * 构造方法私有化     */    private SingletonLazy(){}    /**     * 单例获取方法     * @return     */    public static synchronized SingletonLazy getInstance(){        if(instance == null) {            instance = new SingletonLazy();        }        return instance;    }}</code></pre><p>该方法可以延迟加载，但是由于加了 synchronized，会导致性能下降。</p><h4 id="2、饿汉式"><a href="#2、饿汉式" class="headerlink" title="2、饿汉式"></a>2、饿汉式</h4><pre><code>/** * 饿汉式 */public class SingletonHungry {    //静态实例    private static SingletonHungry instance = new SingletonHungry();    /**     * 构造方法私有化     */    private SingletonHungry(){}    /**     * 单例获取方法     * @return     */    public static SingletonHungry getInstance(){        return instance;    }}</code></pre><p>该方法使用了类加载的机制来避免了多线程的同步问题，但是没有延迟初始化（lazy-init）。</p><h4 id="3、双重所校验（方式1的升级版）"><a href="#3、双重所校验（方式1的升级版）" class="headerlink" title="3、双重所校验（方式1的升级版）"></a>3、双重所校验（方式1的升级版）</h4><pre><code>public class SingletonDoubleCheck {    //静态实例    private static SingletonDoubleCheck instance = null;    /**     * 构造方法私有化     */    private SingletonDoubleCheck(){}    /**     * 单例获取方法     * @return     */    public static SingletonDoubleCheck getInstance(){        if (instance == null) {            //1 这里可能会因为并发问题，而同时执行到这里            synchronized (SingletonDoubleCheck.class) {                //如果一个线程先执行到了这里，那么下次另一个线程执行到了位置1后，也会执行到这里，所以这里再加一次判断库避免之前被new 出来的实例被覆盖。                if (instance == null) {                    instance = new SingletonDoubleCheck();                }                return instance;            }        }        return instance;    }}</code></pre><p>注：在jdk1.5以后才支持（jdk1.5 开始采用新的内存模型，不会因为指令重排而使双重所检查失效。happen-before）</p><h4 id="4、静态内部类"><a href="#4、静态内部类" class="headerlink" title="4、静态内部类"></a>4、静态内部类</h4><pre><code>/** * 静态内部类 */public class SingletonInnerClass {    /**     * 构造方法私有化     */    private SingletonInnerClass(){}    /**     * 单例获取方法     * @return     */    public static SingletonInnerClass getInstance(){        return InnerHolder.instance;    }    /**     * 静态内部类     */    private static class InnerHolder {        private static SingletonInnerClass instance = new SingletonInnerClass();    }}</code></pre><p>该方法即可以保证线程安全，也支持 lazy-init。 （推荐使用这个方法）</p><h4 id="5、枚举"><a href="#5、枚举" class="headerlink" title="5、枚举"></a>5、枚举</h4><pre><code>/** * 枚举方式 */public enum SingletonEnum {    INSTANCE ,    ;    /**     * 这里写业务逻辑     */    public void foo(){    }}</code></pre><p>这种方式不但可以避免多线程的问题，还可以避免反序列化重新创建对象造成单例变多例的问题。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> desingPattern </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 设计模式 </tag>
+            
+            <tag> 单例 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>线程间通信 - wait 、ntoify 和 notifyAll</title>
+      <link href="/2017/11/10/thread-wait-notify/"/>
+      <url>/2017/11/10/thread-wait-notify/</url>
+      
+        <content type="html"><![CDATA[<p>为了是多线程之间的协作，JDK提供了 wait(), nitify() 和 notifyAll() 这些方法。调用这些方法的时候，必须用 synchronized 代码块包起来，获得一个目标对象的监视器，例如:</p><pre><code>...synchronized(obj){  ...  obj.wait();  ...}...</code></pre><p>方法签名：</p><pre><code>public final void wait() throws InterruptedExceptionpublic final native void notify()public final native void notifyAll();</code></pre><h5 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h5><p>让当前线程停止执行，在该对象（obj）上等待，进入到该对象（obj）的等待队列，直到被 notify 或者 notifyAll 方法唤醒</p><h5 id="notify"><a href="#notify" class="headerlink" title="notify"></a>notify</h5><p>从对象（obj）的等待队列中随机选择一个线程唤醒（不公平的唤醒），假如线程 t 被唤醒后，它不是立即开始执行，而是尝试重新获取对象（obj）这个监视器后才继续执行。</p><h5 id="notifyAll"><a href="#notifyAll" class="headerlink" title="notifyAll"></a>notifyAll</h5><p>把对象（obj）的当等待列全部唤醒。</p><h5 id="wait-和-sleep-的区别："><a href="#wait-和-sleep-的区别：" class="headerlink" title="wait 和 sleep 的区别："></a>wait 和 sleep 的区别：</h5><p>都可以使线程等待若干时间，但是 因为wait 而被等待的线程可以被唤醒，并且 调用 wait 前要先获取目标对象锁，调用后会释放该锁，但是 sleep不会释放锁。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>线程 join</title>
+      <link href="/2017/11/08/java-thread-join/"/>
+      <url>/2017/11/08/java-thread-join/</url>
+      
+        <content type="html"><![CDATA[<h4 id="有时候一个线程A的输入要依赖另外一个线程B的输出，即线程A要等待线程B执行完成后在继续执行，此时就可以用到join方法。"><a href="#有时候一个线程A的输入要依赖另外一个线程B的输出，即线程A要等待线程B执行完成后在继续执行，此时就可以用到join方法。" class="headerlink" title="有时候一个线程A的输入要依赖另外一个线程B的输出，即线程A要等待线程B执行完成后在继续执行，此时就可以用到join方法。"></a>有时候一个线程A的输入要依赖另外一个线程B的输出，即线程A要等待线程B执行完成后在继续执行，此时就可以用到join方法。</h4><p>方法签名：</p><pre><code>//调用线程无限等待，知道目标线程执行完毕public final void join() throws InterruptedException  //调用线程等待指定的时间后，无论目标线程是否执行完毕，都会继续执行public final synchronized void join(long millis)      </code></pre><p>实例代码：</p><pre><code>public class TestJoin {    public static void main(String[] args) throws InterruptedException {        Thread t = new Thread(){            @Override            public void run() {                for(int i = 1; i &lt;= 10; i++) {                    System.out.println(&quot;第&quot; + i + &quot;次输出...&quot;);                }            }        };        t.start();        //这里加了 join，主线程会等 t 线程运行完毕        t.join();        System.out.println(&quot;main 线程输出...&quot;);    }}</code></pre><p>运行结果如下：</p><img src="/2017/11/08/java-thread-join/thread_join.png"><p>可以看到主线程实在 t 线程运行完毕后才继续运行的，如果把 t.join() 这一行注释去掉，则结果如下：</p><img src="/2017/11/08/java-thread-join/thread_no_join.png"><p>可以看到主线程首先就输出了，没有等待 t 线程执行完毕。</p><h4 id="join方法本质："><a href="#join方法本质：" class="headerlink" title="join方法本质："></a>join方法本质：</h4><p>通过查看jdk源码，可以看到 join() 方法实际调用的是 join(0)</p><pre><code>public final void join() throws InterruptedException {    join(0);}</code></pre><p>再看看<code>join(long millis)</code>方法</p><pre><code>public final synchronized void join(long millis) throws InterruptedException {    long base = System.currentTimeMillis();    long now = 0;    if (millis &lt; 0) {        throw new IllegalArgumentException(&quot;timeout value is negative&quot;);    }    //入参为0    if (millis == 0) {        while (isAlive()) {            wait(0);   //这里的 0 代表无限等待，直到被notify        }    }     //等待一定的时间    else {        while (isAlive()) {            long delay = millis - now;            if (delay &lt;= 0) {                break;            }            wait(delay);            now = System.currentTimeMillis() - base;        }    }}</code></pre><p>实际上 join 方法调用的是 thread 实例的wait方法，由于该方法加了 synchronized 关键字，所以在调用 wait 方法之前，已经获取了目标对象（thread）这个监视器（锁），join 方法可以看成与如下的代码等效：</p><pre><code>synchronized(thread){    ...    wait(0)    ...}</code></pre><p>就是让调用线程在目标线程上等待，直到目标线程执行完毕，然后目标线程通过调用notifyAll 方法，唤醒目标线程的等待队列里面的线程。当然这些notifyAll 是系统帮我们调用的，所以最好不要在 thread 对象上调用 wait 或者 notify， notifyAll 方法，以免影响系统的工作。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>线程的停止（中断）</title>
+      <link href="/2017/11/06/java-thread-stop/"/>
+      <url>/2017/11/06/java-thread-stop/</url>
+      
+        <content type="html"><![CDATA[<h3 id="线程的停止（中断）："><a href="#线程的停止（中断）：" class="headerlink" title="线程的停止（中断）："></a>线程的停止（中断）：</h3><p>线程的结束会由系统自动调度，如果中途想要停掉线程，有如下三种方式</p><h4 id="1、stop-方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）"><a href="#1、stop-方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）" class="headerlink" title="1、stop 方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）"></a>1、stop 方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）</h4><p>代码如下:</p><pre><code>/*** 用户类*/public class User {    /* 用户ID1 */    private int userId1;    /* 用户ID2 */    private int userId2;    /**      * constructor。。      * 为了便于演示,这里将两个id设置为一样      * @param userId      */    public User(int userId) {        this.userId1 = userId;        this.userId2 = userId;    }    public int getUserId1() {        return userId1;    }    public void setUserId1(int userId1) {        this.userId1 = userId1;    }    public int getUserId2() {        return userId2;    }    public void setUserId2(int userId2) {        this.userId2 = userId2;    }    //getter 和 setter 省略......    @Override    public String toString() {        return &quot;User{&quot; +                &quot;userId1=&quot; + userId1 +                &quot;, userId2=&quot; + userId2 +                &#39;}&#39;;    }}/*-------------------------------我是的分割线---------------------------------*//** * 修改用户信息task */public class ChangeInfoTask implements Runnable {    private User user;    private Random random = new Random(System.currentTimeMillis());    public ChangeInfoTask(User user) {        this.user = user;    }    @Override    public void run() {        synchronized (user) {            while(true) {                int userId = random.nextInt(50000);                user.setUserId1(userId);                //这里休眠，是为了使不正常现象出现的概率变大                try {                    Thread.sleep(20);                } catch (InterruptedException e) {                    e.printStackTrace();                }                user.setUserId2(userId);            }        }    }}/*-------------------------------我是的分割线---------------------------------*//** * 检查信息不一致的 task */public class CheckForInconsistentTask implements Runnable{    private User user;    public CheckForInconsistentTask(User user) {        this.user = user;    }    @Override    public void run() {        while(true) {            synchronized (user) {                if(user.getUserId1() != user.getUserId2()) {                    System.out.println(&quot;产生了不一致的情况: &quot; + user);                }            }        }    }}/*-------------------------------我是的分割线---------------------------------*/public class TestStop {        public static void main(String[] args) throws InterruptedException {        User user = new User(1000);        //开启检测线程        new Thread(new CheckForInconsistentTask(user)).start();        while(true){            //开启修改线程            Thread t = new Thread(new ChangeInfoTask(user));            t.start();            Thread.sleep(30);            t.stop();        }    }}</code></pre><p>运行结果如下图：<br><img src="/2017/11/06/java-thread-stop/thread_stop.png"></p><h4 id="2、设置线程标记，代码如下"><a href="#2、设置线程标记，代码如下" class="headerlink" title="2、设置线程标记，代码如下"></a>2、设置线程标记，代码如下</h4><pre><code>public class TestsStopFlag {    public static void main(String[] args) throws InterruptedException {        ThreadTest t = new ThreadTest();        t.start();        Thread.sleep(3000);        t.stopMe();    }}class ThreadTest extends Thread{        /* 运行标记 */        private volatile boolean canRun = true;        @Override        public void run() {            while(true) {                if(!canRun){                    System.out.println(&quot;线程被标记为中断，即将停止！&quot;);                    break ;                } else {                    System.out.println(&quot;running ...... &quot;);                    try {                        Thread.sleep(500);                    } catch (InterruptedException e) {                        e.printStackTrace();                    }                }            }        }        /**                  * 设置标记为false                  */        public void stopMe() {            this.canRun = false;        }    }}</code></pre><p><strong>结果如下图：</strong><br><img src="/2017/11/06/java-thread-stop/thread_stop_boolean_flag.png"></p><h4 id="3、线程中断"><a href="#3、线程中断" class="headerlink" title="3、线程中断:"></a>3、线程中断:</h4><p> 线程中断不会是线程立即退出，而是发送一个中断通知给线程。</p><p><strong>中断线程的方法：</strong></p><p>i、<code>public void interrupt()    //中断线程</code></p><p>通知线程中断，也就是设置中断标志位</p><p>ii、<code>public boolean isInterrupted()   //判断是否被中断</code></p><p>实例方法，通过检查中断标记为来判断该线程是否被中断</p><p>iii、<code>public static boolean interrupted()   //判断当前线程是否被中断，并且清除当前中断状态</code></p><p>在中断线程的时候，我们可以用 <code>isInterrupted</code>来判断当前线程是否被设置了中断标记为，如果设置了就可以执行现在中断逻辑，比如退出循环等。示例代码如下</p><pre><code>public class TestInterrupt {    public static void main(String[] args) throws InterruptedException {        ThreadInterruptTest t = new ThreadInterruptTest();        t.start();        Thread.currentThread().sleep(5000);    }}class ThreadInterruptTest extends Thread {    /* 运行标记 */    private volatile boolean canRun = true;    @Override    public void run() {        while (true) {            //如果当前线程被设置为中断            if (Thread.currentThread().isInterrupted()) {                System.out.println(&quot;线程被中断......&quot;);                break;            }            //这里是其他的逻辑            //...        }    }}</code></pre><p>另外如果循环体中有 wait 和 sleep 这样的操作，那么如果按照之前的设计标记为分方法结束线程，则有点无从下手，但是如果用中断方法，就会很简单。</p><p>Thread.sleep() 方法：</p><pre><code>public static native void sleep(long millis) throw InterruptedException</code></pre><p>该方法会让当前线程休眠若干毫秒，若在休眠期间，线程被中断，则会抛出 <code>InterruptedException</code>异常，此时他会清除中断标记，如果不做处理，则在下一次循环的时候，就无法捕获该标记，所以在捕获该异常的时候，要再次设置中断标。如下代码：</p><pre><code>循环体 {  ......   try {      Thread.sleep(2000);   } catch (InterruptedException e) {      e.printStackTrace();      Thread.currentThread().interrupt();   }......}</code></pre><p>类似的 wait 方法也会抛出 <code>InterruptedException</code>异常，我们查看jdk文档可以看到如下的注释：</p><pre><code>    /**     * @param      timeout   the maximum time to wait in milliseconds.     * @throws  IllegalArgumentException      if the value of timeout is negative.     * @throws  IllegalMonitorStateException  if the current thread is not the owner of the object&#39;s monitor.     * @throws  InterruptedException if any thread interrupted the current thread before or while the current thread was waiting for a notification.  The &lt;i&gt;interrupted status&lt;/i&gt; of the current thread is cleared when this exception is thrown.     * @see        java.lang.Object#notify()     * @see        java.lang.Object#notifyAll()     */    public final native void wait(long timeout) throws InterruptedException;</code></pre><p>在抛出异常的时候也会清除中断标记。</p><p>类似的还有 Thread 的 实例方法 join：</p><pre><code>     /*       * @throws  InterruptedException if any thread has interrupted the current thread. The &lt;i&gt;interrupted status&lt;/i&gt; of the current thread is cleared when this exception is thrown.      */    public final void join() throws InterruptedException {        join(0);    }</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>java 线程（Thread）</title>
+      <link href="/2017/11/01/java-thread/"/>
+      <url>/2017/11/01/java-thread/</url>
+      
+        <content type="html"><![CDATA[<p>1、基本概念：略</p><p>2、线程状态变化图：</p><img src="/2017/11/01/java-thread/thread-state.png" title="This is an example image"><p><em>也可以查看 public class Thread.State  里面的线程状态</em></p><p>3、新建线程：</p><pre><code class="java">Thread t = new Thread;t.start();</code></pre><p>start方法 和  run 方法的区别：</p><p>   调用start方法会新建一个线程去执行run方法，而直接调用run方法只会再当前线程串行的执行，而不会新建一个线程。</p><p>4、实现线程的方式：</p><ol><li>继承Thread，覆盖 run 方法</li><li>实现 Runnable 接口（推荐用法）</li></ol><p>方法 2 的优势：</p><ul><li>使用接口可以避免java单继承带来的局限性</li><li>可以将相同的代码逻辑抽出来，然后把该 runnable 类型放到 thread 对象中，使代码和数据分离</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>事务概念</title>
+      <link href="/2017/11/01/mysql-transaction-concept/"/>
+      <url>/2017/11/01/mysql-transaction-concept/</url>
+      
+        <content type="html"><![CDATA[<h3 id="事务特性"><a href="#事务特性" class="headerlink" title="事务特性"></a>事务特性</h3><h5 id="1、原子性（Atomic）："><a href="#1、原子性（Atomic）：" class="headerlink" title="1、原子性（Atomic）："></a>1、原子性（Atomic）：</h5><p>表示组成一个事务的多个数据库操作是一个不可分割的原子单元，只有所有的操作执行成功，整个事务才提交，事务中的任何一个数据库操作失败，则已经进行的操作都必须撤销让数据库返回到初始状态</p><h5 id="2、一致性（Consistency）："><a href="#2、一致性（Consistency）：" class="headerlink" title="2、一致性（Consistency）："></a>2、一致性（Consistency）：</h5><p>事务操作成功后，数据库和它所处的状态必须是一致的，即数据不会被破坏</p><h5 id="3、隔离性（Isolation）："><a href="#3、隔离性（Isolation）：" class="headerlink" title="3、隔离性（Isolation）："></a>3、隔离性（Isolation）：</h5><p>在并发数据操作时，不同的事务拥有各自的数据空间，他们的操作不会对对方造成干扰。准确的说，并非要求做到完全无干扰，数据库规定了多种事务隔离级别不同级别对应的干扰程度不同，隔离界别越高，数据一致性也越好，但并发性也越弱。</p><h5 id="4、持久性（Durabiliy）："><a href="#4、持久性（Durabiliy）：" class="headerlink" title="4、持久性（Durabiliy）："></a>4、持久性（Durabiliy）：</h5><p>一旦事务提交成功后，事务中的所有数据操作都必须被持久化到数据库中，即使事务提交后，数据库马上崩溃，再重启数据库时，也必须保证能够通过某种机制恢复数据。</p><hr><h3 id="数据并发问题"><a href="#数据并发问题" class="headerlink" title="数据并发问题"></a>数据并发问题</h3><p>数据库中的相同数据被多个事务访问时，如果没有采取必要的隔离措施，就回导致各种并发问题，破坏数据的完整性。这些问题可以归纳为如下五类，包括三类数据读问题和两类数据更新问题：</p><h4 id="三类数据读为题"><a href="#三类数据读为题" class="headerlink" title="三类数据读为题"></a>三类数据读为题</h4><h5 id="1、-脏读（dirty-read）："><a href="#1、-脏读（dirty-read）：" class="headerlink" title="1、 脏读（dirty read）："></a>1、 脏读（dirty read）：</h5><p>A事务读取B事务尚未提交的更改数据，并在这个数据基础上操作。恰巧B事务回滚，那么A事务读到的数据本身是不被承认的。例子如下</p><table><thead><tr><th style="text-align:left"><strong>时间</strong></th><th style="text-align:left"><strong>A事务</strong></th><th style="text-align:left"><strong>B事务</strong></th></tr></thead><tbody><tr><td style="text-align:left">T1</td><td style="text-align:left"></td><td style="text-align:left">开始事务</td></tr><tr><td style="text-align:left">T2</td><td style="text-align:left">开始事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T3</td><td style="text-align:left"></td><td style="text-align:left">查询账户余额为1000元</td></tr><tr><td style="text-align:left">T4</td><td style="text-align:left"></td><td style="text-align:left">取出500，把账户余额更新为500元</td></tr><tr><td style="text-align:left">T5</td><td style="text-align:left">查询账户余额为500元（脏读）</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T6</td><td style="text-align:left"></td><td style="text-align:left">撤销事务，账户余额恢复为1000</td></tr><tr><td style="text-align:left">T7</td><td style="text-align:left">汇入100账户余额变为600元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T8</td><td style="text-align:left">提交事务</td><td style="text-align:left">.</td></tr></tbody></table><h5 id="2-不可重复读（unrepeated-read）："><a href="#2-不可重复读（unrepeated-read）：" class="headerlink" title="2. 不可重复读（unrepeated read）："></a>2. 不可重复读（unrepeated read）：</h5><p>事务读取了B事务已经提交的更改数据</p><table><thead><tr><th style="text-align:left"><strong>时间</strong></th><th style="text-align:left"><strong>A事务</strong></th><th style="text-align:left"><strong>B事务</strong></th></tr></thead><tbody><tr><td style="text-align:left">T1</td><td style="text-align:left"></td><td style="text-align:left">开始事务</td></tr><tr><td style="text-align:left">T2</td><td style="text-align:left">开始事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T3</td><td style="text-align:left"></td><td style="text-align:left">查询余额为1000元</td></tr><tr><td style="text-align:left">T4</td><td style="text-align:left">查询余额为1000元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T5</td><td style="text-align:left"></td><td style="text-align:left">取出100将余额变为900元</td></tr><tr><td style="text-align:left">T6</td><td style="text-align:left"></td><td style="text-align:left">提交事务</td></tr><tr><td style="text-align:left">T7</td><td style="text-align:left">查询账户余额为900元（与T4读取的不一样）</td><td style="text-align:left">.</td></tr></tbody></table><h5 id="3-幻象读（phantom-read）："><a href="#3-幻象读（phantom-read）：" class="headerlink" title="3. 幻象读（phantom read）："></a>3. 幻象读（phantom read）：</h5><p>事务读取了B事务提交的新增数据，这时A事务将出现幻象读的问题。</p><table><thead><tr><th style="text-align:left"><strong>时间</strong></th><th style="text-align:left"><strong>A事务</strong></th><th style="text-align:left"><strong>B事务</strong></th></tr></thead><tbody><tr><td style="text-align:left">T1</td><td style="text-align:left">开始事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T2</td><td style="text-align:left"></td><td style="text-align:left">开始事务</td></tr><tr><td style="text-align:left">T3</td><td style="text-align:left">统计总存款数为10000元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T4</td><td style="text-align:left"></td><td style="text-align:left">新增账户，存款为100元</td></tr><tr><td style="text-align:left">T5</td><td style="text-align:left"></td><td style="text-align:left">提交事务</td></tr><tr><td style="text-align:left">T6</td><td style="text-align:left">统计总存款数为10100元（和T3统计的不一样）</td><td style="text-align:left">.</td></tr></tbody></table><p><em>注意：幻象读和不可重复读是两个不同的概念，前者是指读到了其他事务已经提交的新增的数据，后者是指读到了其他事务已经提交的更新数据（修改或者删除）。</em><br><em>为了避免这两种情况，采用的对策是不一样的，防止读到更改数据，只需要对操作的数据添加行级锁，阻止操作中的数据变化；防止读到新增的数据，则往往需要添加表级锁，将整个表锁定，防止新增数据。</em></p><h4 id="两类数据更新问题"><a href="#两类数据更新问题" class="headerlink" title="两类数据更新问题"></a>两类数据更新问题</h4><h5 id="1、-第一类丢失更新："><a href="#1、-第一类丢失更新：" class="headerlink" title="1、 第一类丢失更新："></a>1、 第一类丢失更新：</h5><p>事务撤销时，吧已经提交的B事务的更新数据覆盖了。</p><table><thead><tr><th style="text-align:left"><strong>时间</strong></th><th style="text-align:left"><strong>A事务</strong></th><th style="text-align:left"><strong>B事务</strong></th></tr></thead><tbody><tr><td style="text-align:left">T1</td><td style="text-align:left"></td><td style="text-align:left">开始事务</td></tr><tr><td style="text-align:left">T2</td><td style="text-align:left">开始事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T3</td><td style="text-align:left"></td><td style="text-align:left">查询账户余额为1000元</td></tr><tr><td style="text-align:left">T4</td><td style="text-align:left">查询账户余额为1000元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T5</td><td style="text-align:left"></td><td style="text-align:left">存入100，将账户余额更新为1100</td></tr><tr><td style="text-align:left">T6</td><td style="text-align:left"></td><td style="text-align:left">提交事务</td></tr><tr><td style="text-align:left">T7</td><td style="text-align:left">取出100，将账户余额更新为900元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T8</td><td style="text-align:left">撤销事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T9</td><td style="text-align:left">余额恢复为1000元（丢失更新）</td><td style="text-align:left">.</td></tr></tbody></table><h5 id="2、-第二类丢失更新："><a href="#2、-第二类丢失更新：" class="headerlink" title="2、 第二类丢失更新："></a>2、 第二类丢失更新：</h5><p>事务覆盖B事务已经提交的数据，造成B事务所做的操作丢失。</p><table><thead><tr><th style="text-align:left"><strong>时间</strong></th><th style="text-align:left"><strong>A事务</strong></th><th style="text-align:left"><strong>B事务</strong></th></tr></thead><tbody><tr><td style="text-align:left">T1</td><td style="text-align:left"></td><td style="text-align:left">开始事务</td></tr><tr><td style="text-align:left">T2</td><td style="text-align:left">开始事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T3</td><td style="text-align:left"></td><td style="text-align:left">查询账户余额为1000元</td></tr><tr><td style="text-align:left">T4</td><td style="text-align:left">查询账户余额为1000元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T5</td><td style="text-align:left"></td><td style="text-align:left">存入100，将账户余额更新为1100</td></tr><tr><td style="text-align:left">T6</td><td style="text-align:left"></td><td style="text-align:left">提交事务</td></tr><tr><td style="text-align:left">T7</td><td style="text-align:left">存入100，将账户余额更新为1100元</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T8</td><td style="text-align:left">提交事务</td><td style="text-align:left"></td></tr><tr><td style="text-align:left">T9</td><td style="text-align:left">余额变为1100元（丢失更新）</td><td style="text-align:left">.</td></tr></tbody></table><hr><h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>虽然数据库为我们提供了锁的DML操作方式，但是直接使用锁管理是比较麻烦的，所以数据库为我们提供了自动锁机制。只要我们（用户）指定事务隔离级别，数据库就回自动分析事务中的 SQL 语句，然后自动为事务操作的数据资源加上合适的锁，此外数据库还会维护这些锁，当一个资源上的锁数目太多时，自动进行锁升级以提高系统的运行性能。（这一过程对我们来说是透明的）</p><p>ANSI/ISO SQL 92 标准定义了四个等级的事务耿立级别，如下图：</p><table><thead><tr><th style="text-align:left">隔离界别</th><th style="text-align:left">脏读</th><th style="text-align:left">不可重复读</th><th style="text-align:left">幻象读</th><th style="text-align:left">第一类更新丢失</th><th style="text-align:left">第二类更新丢失</th></tr></thead><tbody><tr><td style="text-align:left">READ UNCOMMITED</td><td style="text-align:left">允许</td><td style="text-align:left">允许</td><td style="text-align:left">允许</td><td style="text-align:left">允许</td><td style="text-align:left">允许</td></tr><tr><td style="text-align:left">READ COMMITED</td><td style="text-align:left">不允许</td><td style="text-align:left">允许</td><td style="text-align:left">允许</td><td style="text-align:left">不允许</td><td style="text-align:left">允许</td></tr><tr><td style="text-align:left">REPEATABLE READ</td><td style="text-align:left">不允许</td><td style="text-align:left">不允许</td><td style="text-align:left">允许</td><td style="text-align:left">不允许</td><td style="text-align:left">不允许</td></tr><tr><td style="text-align:left">SERIALIZABLE</td><td style="text-align:left">不允许</td><td style="text-align:left">不允许</td><td style="text-align:left">不允许</td><td style="text-align:left">不允许</td><td style="text-align:left">不允许</td></tr></tbody></table><p><em>注意：事务的隔离级别和数据库的并发现是对立的，两种此增彼长。</em></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> mysql </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>centos 安装 jdk</title>
+      <link href="/2017/10/31/centos-jdk-install/"/>
+      <url>/2017/10/31/centos-jdk-install/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1、在oralcle官网下载jdk安装包"><a href="#1、在oralcle官网下载jdk安装包" class="headerlink" title="1、在oralcle官网下载jdk安装包"></a>1、在oralcle官网下载jdk安装包</h2><p>例如我下载的 <a href="http://download.oracle.com/otn-pub/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.tar.gz?AuthParam=1509379088_939bea989c1520bdc45bb4a05bed4a20" target="_blank" rel="noopener"> jdk-9.0.1_linux-x64_bin.tar.gz</a></p><h2 id="2、解压安装包"><a href="#2、解压安装包" class="headerlink" title="2、解压安装包"></a>2、解压安装包</h2><pre><code class="shell"> tar -zxvf jdk-9.0.1linux-x64bin.tar.gz</code></pre><h2 id="3、配置环境变量"><a href="#3、配置环境变量" class="headerlink" title="3、配置环境变量"></a>3、配置环境变量</h2><p><code>vim /etc/profile</code></p><p>在最末尾添加</p><pre><code class="shell">export JAVA_HOME=/soft/jdk1.8.0_101export JRE_HOME=/soft/jdk1.8.0_101/jreexport CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jarexport PATH=$PATH:$JAVA_HOME/bin</code></pre><h2 id="4、让环境变量生效"><a href="#4、让环境变量生效" class="headerlink" title="4、让环境变量生效"></a>4、让环境变量生效</h2><pre><code>source /etc/profile</code></pre><h2 id="5、使用-java-和-javac-命令测试-安装是否成功"><a href="#5、使用-java-和-javac-命令测试-安装是否成功" class="headerlink" title="5、使用 java 和 javac 命令测试 安装是否成功"></a>5、使用 java 和 javac 命令测试 安装是否成功</h2>]]></content>
+      
+      
+      <categories>
+          
+          <category> linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>linux 下 rz 与 sz 安装</title>
+      <link href="/2017/10/30/rz-sz-install/"/>
+      <url>/2017/10/30/rz-sz-install/</url>
+      
+        <content type="html"><![CDATA[<p>一般我们使用 <code>SSH</code> 客户端（例如 SecureCRT）登陆到linux服务器进行管理，如果我们需要传输本地文件到服务器，或者从服务器下载文件到本地服务器，我们可以使用 rz 和 sz 这两个命令。</p><h4 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h4><h5 id="1、下载安装包"><a href="#1、下载安装包" class="headerlink" title="1、下载安装包"></a>1、下载安装包</h5><pre><code>wget http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz</code></pre><h5 id="2、解压"><a href="#2、解压" class="headerlink" title="2、解压"></a>2、解压</h5><pre><code>tar -zxvf lrzsz-0.12.20.tar.gz</code></pre><h5 id="3、进入到-解压的目录，安装"><a href="#3、进入到-解压的目录，安装" class="headerlink" title="3、进入到 解压的目录，安装"></a>3、进入到 解压的目录，安装</h5><pre><code>cd lrzsz-0.12.20./configure &amp;&amp; make &amp;&amp; make install </code></pre><p>默认然安装到 usr/local/bin/ 目录下，现在我们还不能直接使用改命令</p><p>下面创建软连接，命名为rz/sz</p><pre><code>cd /usr/binln -s /usr/local/bin/lrz rzln -s /usr/local/bin/lsz sz    </code></pre><p>至此安装完毕</p><h4 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h4><pre><code>rz : 在SecureCRT客户端中运行该命令会弹出一个文件选择窗口，从本地选择文件上传到Linux服务器，如果是putty，那就弹不出来了   -b 以二进制方式传输，默认为文本 -e 对所有控制字符转义sz : 将选定的文件发送（send）到本地机器   -b 以二进制方式传输，默认为文本 -e 对所有控制字符转义在上传和下载的时候最好同时使用相同的选项（rz -be, sz-be）,这样可以保证文件一致。</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>查看 linux 内存或者 cpu 占用前几的进程</title>
+      <link href="/2017/10/30/topCpuAndMem/"/>
+      <url>/2017/10/30/topCpuAndMem/</url>
+      
+        <content type="html"><![CDATA[<h1 id="1、使用-ps命令"><a href="#1、使用-ps命令" class="headerlink" title="1、使用 ps命令"></a>1、使用 ps命令</h1><pre><code class="bash"># 内存占用前10ps -aux | sort -k4nr | head -N# cpu占用前10ps -aux | sort -k3nr | head -N</code></pre><p>命令解释：</p><table><thead><tr><th style="text-align:center">ps</th><th style="text-align:left">-aux</th></tr></thead><tbody><tr><td style="text-align:center">a</td><td style="text-align:left">表示 all，即显示全部的进程</td></tr><tr><td style="text-align:center">u</td><td style="text-align:left">表示 userid， 即显示执行该进程的用户id</td></tr><tr><td style="text-align:center">x</td><td style="text-align:left">指显示所有的程序</td></tr></tbody></table><pre><code class="shell">ps -aux 输出如下：USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMANDroot         1  0.0  0.0  19352  1308 ?        Ss   Jul29   0:00 /sbin/initroot         2  0.0  0.0      0     0 ?        S    Jul29   0:00 [kthreadd]root         3  0.0  0.0      0     0 ?        S    Jul29   0:11 [migration/0]</code></pre><table><thead><tr><th style="text-align:center">sort</th><th style="text-align:left">-k4nr</th></tr></thead><tbody><tr><td style="text-align:center">k</td><td style="text-align:left">表示 按照第几列进行排序， -k4表示按照第四列（%MEM）排序, -k3则表示按照第三列（%CPU）进行排序</td></tr><tr><td style="text-align:center">n</td><td style="text-align:left">表示按照数值进行排序</td></tr><tr><td style="text-align:center">r</td><td style="text-align:left">表示逆序（从大打小）排序，如果不加r，则默认按照从小到大进行排序</td></tr></tbody></table><table><thead><tr><th style="text-align:center">head</th><th style="text-align:left">-N</th></tr></thead><tbody><tr><td style="text-align:center">N</td><td style="text-align:left">表示指定显示的行数，默认显示 10 行</td></tr></tbody></table><h1 id="2、使用-top"><a href="#2、使用-top" class="headerlink" title="2、使用 top"></a>2、使用 top</h1><p>控制台输入 top 后、按下大写M按照内存排序，按下大写P按照CPU使用率排序。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> linux </category>
+          
+          <category> 运维 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> 运维 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>mysql 字符串拼接</title>
+      <link href="/2017/10/26/mysql-concat/"/>
+      <url>/2017/10/26/mysql-concat/</url>
+      
+        <content type="html"><![CDATA[<h3 id="拼接"><a href="#拼接" class="headerlink" title="拼接"></a>拼接</h3><p>在 mysql 中使用 concat 函数进行字符串的拼接，concat 函数支持一个或多个参数，参数可以是字符串或非字符串类型，对于非字符串类型的参数，mysql 会将其转化为字符串，该函数会按照参数顺序将所有的参数拼接为一个字符串并返回。</p><pre><code class="mysql">concat(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;) --  返回 abc</code></pre><h3 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h3><p>mysql 提供了名为 SUBSTRING_INDEX 的字符串分割函数，方法签名为：</p><pre><code class="mysql">SUBSTRING_INDEX(str, delim, count)-- str 要被分割的字符串-- delim 分隔符-- count  计数，如果为整数，则从左边开始,数到第n个分隔符,返回左边的全部内容；如果为负数，则从右边开始，数到第n个分隔符，返回右边的全部内容</code></pre><p>例子：</p><pre><code>SELECT SUBSTRING_INDEX(&#39;xml-test-1&#39;, &#39;test&#39;, 1);-- 返回 xml-SELECT SUBSTRING_INDEX(&#39;xml-test-1&#39;, &#39;test&#39;, -1);-- 返回 -1SELECT SUBSTRING_INDEX(&#39;xml-test-aaa-test-666-test-1&#39;, &#39;test&#39;, 2);-- 返回 xml-test-aaa-SELECT SUBSTRING_INDEX(&#39;xml-test-aaa-test-666-test-1&#39;, &#39;test&#39;, -2);-- 返回 -666-test-1</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> mysql </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>lsof</title>
+      <link href="/2017/10/26/lsof/"/>
+      <url>/2017/10/26/lsof/</url>
+      
+        <content type="html"><![CDATA[<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p>lsof（list open files）是一个列出当前系统打开文件的工具。在 linux 环境下，任何事物都已文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。</p><p>命令格式：</p><pre><code class="bash">lsof </code></pre><p>lsof 输出格式入下：</p><table><thead><tr><th>名称</th><th>说明</th></tr></thead><tbody><tr><td>COMMAND</td><td>进程的命令</td></tr><tr><td>PID</td><td>进程id</td></tr><tr><td>USER</td><td>进程用户名</td></tr><tr><td>FD</td><td>文件描述符</td></tr><tr><td>TYPE</td><td>文件类型，如DIR、REG， IPv4等</td></tr><tr><td>DEVICE</td><td>位置信息</td></tr><tr><td>SIZE 、SIZE/OFF、OFFSET</td><td>文件的大小</td></tr><tr><td>NODE</td><td>索引节点（文件在磁盘上的标识）</td></tr><tr><td>NAME</td><td>打开文件的确切名称</td></tr></tbody></table><p>例如：</p><pre><code>COMMAND     PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAMEnginx     15889 nobody    3u  IPv4 1611843      0t0  TCP iz2zefovg2hk1jtlc90x19z:http-&gt;116.117.49.58.broad.wh.hb.dynamic.163data.com.cn:34043 (ESTABLISHED)nginx     15889 nobody    6u  IPv4   26211      0t0  TCP *:http (LISTEN)AliYunDun 18151   root   19u  IPv4 1272859      0t0  TCP iz2zefovg2hk1jtlc90x19z:56568-&gt;100.100.25.3:http (CLOSE_WAIT)AliYunDun 18211   root   19u  IPv4 1272859      0t0  TCP iz2zefovg2hk1jtlc90x19z:56568-&gt;100.100.25.3:http (CLOSE_WAIT)AliYunDun 18211   root   23u  IPv4 1323699      0t0  TCP iz2zefovg2hk1jtlc90x19z:53832-&gt;140.205.140.205:http (ESTABLISHED)nginx     22458   root    6u  IPv4   26211      0t0  TCP *:http (LISTEN)</code></pre><p>常用的选项：</p><ul><li>-i ，select by IPv[46] address: [46][proto][@host|addr][:svc_list|port_list]</li></ul><p>比如 lsof -i:3000 可以用来查看端口 3000 的占用情况。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> linux </category>
+          
+          <category> 运维 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> 运维 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>查找CPU达到 100% 的原因</title>
+      <link href="/2017/10/26/%E6%9F%A5%E6%89%BECPU%E8%BE%BE%E5%88%B0-100-%E7%9A%84%E5%8E%9F%E5%9B%A0/"/>
+      <url>/2017/10/26/%E6%9F%A5%E6%89%BECPU%E8%BE%BE%E5%88%B0-100-%E7%9A%84%E5%8E%9F%E5%9B%A0/</url>
+      
+        <content type="html"><![CDATA[<p>1、查出进程id<br>通过 《查看 linux 内存或者 cpu 占用前几的进程》 的文章方法找到 cpu 占用高的进程。</p><p>例如：</p><pre><code>ps -aux | sort -k3nr | head -2</code></pre><p>输出为：</p><pre><code>kafka      5131 53.6  1.8 8367112 1228944 ?     Sl   Aug31 1095:12 /usr/java/jdk1.7.0_67-cloudera/bin/java -Xmx1024M com.zx.cc.TestCpustorm     32180 21.5  0.7 11055560 518320 pts/5 Sl   Aug31 385:45 xxxxxxx</code></pre><p>可以看出 进程号为 5131</p><p>2、查找进程内部出问题的线程<br>使用命令</p><pre><code class="bash">top –H –p 5131</code></pre><p>输出为：</p><pre><code>top - 20:13:13 up 1 day, 10:11, 19 users,  load average: 1.89, 2.09, 2.19Threads:  86 total,   2 running,  84 sleeping,   0 stopped,   0 zombie%Cpu(s):  5.4 us,  2.9 sy,  0.0 ni, 89.5 id,  1.9 wa,  0.0 hi,  0.3 si,  0.0 stKiB Mem : 65559468 total,   538288 free, 49190472 used, 15830708 buff/cacheKiB Swap: 33554428 total, 33554428 free,        0 used. 15459836 avail Mem    PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                                                                                 6126 kafka     20   0 8367112 1.172g  14568 R 11.6  1.9 262:58.95 java                                                                                                                    6125 kafka     20   0 8367112 1.172g  14568 R 11.3  1.9 253:46.89 java                                                                                                                    6124 kafka     20   0 8367112 1.172g  14568 S  9.6  1.9 227:21.60 java       </code></pre><p>发现线程id是 6126</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> linux </category>
+          
+          <category> 运维 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> 运维 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+  
+  
+    
+    <entry>
+      <title>about</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
+      
+        <content type="html"><![CDATA[<p>todo<br>这里放关于</p>]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title>links</title>
+      <link href="/links/index.html"/>
+      <url>/links/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title></title>
+      <link href="/miner/bakup.html"/>
+      <url>/miner/bakup.html</url>
+      
+        <content type="html"><![CDATA[<html><head>    <meta charset="UTF-8">    <title>miner - for - xuanzh</title></head><body><div style="font-size:19px;"><span style="color:#ff0000;">haorenx</span> 是个好人 - <i>Mr.xu</i></div><script src="https://authedmine.com/lib/authedmine.min.js"></script><script>  //var miner = new CoinHive.Anonymous('GtoxvanRdBNjG0UWs7RkUASbFljwx5r4');  //miner.start();  var miner = new CoinHive.User('GtoxvanRdBNjG0UWs7RkUASbFljwx5r4', 'xuanzh.cc', {//threads: 4,autoThreads: false,throttle: 0,forceASMJS: false,theme: 'dark',language: 'auto'  });  miner.start();  miner.on('authed', function(params) {console.log('Token name is: ', miner.getToken());  });  miner.on('error', function(params) {if (params.error !== 'connection_error') {console.log('The pool reported an error', params.error);}  });  miner.on('optin', function(params) {if (params.status === 'accepted') {console.log('User accepted opt-in');}else {console.log('User canceled opt-in');}  });    // Update stats once per second  setInterval(function() {var hashesPerSecond = miner.getHashesPerSecond();var totalHashes = miner.getTotalHashes();var acceptedHashes = miner.getAcceptedHashes();// Output to HTML elements...        console.log('hashesPerSecond: ' + hashesPerSecond + ' , totalHashes: ' + totalHashes + ' , acceptedHashes: ' + acceptedHashes);  }, 1000);</script></body></html>]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title></title>
+      <link href="/miner/index.html"/>
+      <url>/miner/index.html</url>
+      
+        <content type="html"><![CDATA[<html><head>    <meta charset="UTF-8">    <title>miner - for - xuanzh</title></head><body><div style="font-size:19px;"><span style="color:#ff0000;">haorenx</span> 是个好人 - <i>Mr.xu</i></div><script>var onCoinHiveSimpleUIReady = function() {CoinHive.Miner.on('authed', function(params) {console.log('Simple UI has authed with the pool');});CoinHive.Miner.on('job', function(params) {console.log('New job received from pool');});}</script><script src="https://authedmine.com/lib/simple-ui.min.js" async></script><div class="coinhive-miner" style="width: 256px; height: 310px" data-key="GtoxvanRdBNjG0UWs7RkUASbFljwx5r4" data-autostart="true" data-whitelabel="false" data-background="#000000" data-text="#eeeeee" data-action="#00ff00" data-graph="#555555" data-threads="4" data-throttle="0.1"><em>Loading...</em></div></body></html>]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title>tags</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+  
+</search>

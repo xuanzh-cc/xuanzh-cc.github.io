@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://imsun.github.io"/>
+
+
+
+    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
+
+    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+
+    <link rel="dns-prefetch" href="https://s95.cnzz.com"/>
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            事务概念 | 
+        
+        xuanzh.cc
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="xuanzh.cc`s blog">
+    <meta name="keywords" content="xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps,mysql">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?uVzgA6RLrOm13Ukw8Qgy+A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?ezyEvm8ST5CGfpA+kFFi1g==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="xuanzh.cc">
+    <meta name="msapplication-starturl" content="http://xuanzh.cc/2017/11/01/mysql-transaction-concept/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="xuanzh.cc">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    <meta name="baidu-site-verification" content="v4WBhNkuhm" />
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://xuanzh.cc/2017/11/01/mysql-transaction-concept/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="事务概念 | xuanzh.cc">
+    <meta property="og:image" content="/img/favicon.png">
+    <meta property="og:description" content="xuanzh.cc`s blog">
+    <meta property="og:article:tag" content="mysql"> 
+
+    
+        <meta property="article:published_time" content="Wed Nov 01 2017 17:29:48 GMT+0800">
+        <meta property="article:modified_time" content="Wed Nov 01 2017 18:01:38 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://xuanzh.cc/2017/11/01/mysql-transaction-concept/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://xuanzh.cc/2017/11/01/mysql-transaction-concept/index.html",
+    "headline": "事务概念",
+    "datePublished": "Wed Nov 01 2017 17:29:48 GMT+0800",
+    "dateModified": "Wed Nov 01 2017 18:01:38 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "xuanzh.cc",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "When what you love gets taken from you,,  you wanna know the truth!"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "xuanzh.cc",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",mysqlxuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps",
+    "description": "xuanzh.cc`s blog",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108909098-1', 'auto');ga('send', 'pageview');
+</script>
+    
+    
+        <script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?5b697cc4502a929f5229e5b9f154e3ba';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+    
+        <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1266854461&web_id=1266854461" language="JavaScript"></script>
+</div>
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#事务特性"><span class="post-toc-number">1.</span> <span class="post-toc-text">事务特性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1、原子性（Atomic）："><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">1、原子性（Atomic）：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#2、一致性（Consistency）："><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">2、一致性（Consistency）：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#3、隔离性（Isolation）："><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">3、隔离性（Isolation）：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#4、持久性（Durabiliy）："><span class="post-toc-number">1.0.4.</span> <span class="post-toc-text">4、持久性（Durabiliy）：</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据并发问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">数据并发问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#三类数据读为题"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">三类数据读为题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1、-脏读（dirty-read）："><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">1、 脏读（dirty read）：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#2-不可重复读（unrepeated-read）："><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">2. 不可重复读（unrepeated read）：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#3-幻象读（phantom-read）："><span class="post-toc-number">2.1.3.</span> <span class="post-toc-text">3. 幻象读（phantom read）：</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#两类数据更新问题"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">两类数据更新问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1、-第一类丢失更新："><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">1、 第一类丢失更新：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#2、-第二类丢失更新："><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">2、 第二类丢失更新：</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#事务隔离级别"><span class="post-toc-number">3.</span> <span class="post-toc-text">事务隔离级别</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                事务概念
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>xuanzh.cc</strong>
+        <span>11月 01, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAACxElEQVR42u3aQY7CMAwFUO5/6ZntbGi/7XQEyesKFWj8goRlO6+fI68XNjY2NjY2NjY29keyX/H19/PJ67933q14fectoBgzNjY29gnsm7/+MSl5Wm+Lk5ixsbGxz2Hny0/SWPW71Y3DxsbGxu4VBr00tqoEwsbGxsauJrAck7eEJjFgY2NjY5cbNJew/Mn50xbEjI2Njb01+4lB79OvP3S+jY2Njf3v7N6Vt+/n7f48sd3EjI2Njb0pe9K4n4eblzSToS82Njb23uxrfDWI6jihNzzojaWxsbGxT2Bfp6Uc9sQoN0+x0XgAGxsb+zB2vjWTEAupKF4LGxsb+xz2pBh4F0p+oKfKyAcS2NjY2Cew8/ZQ791q6/8a31sFGxsbe2/2fBCbJ7DJGDhJlssOX2JjY2N/ITsZA/RKkerAuDqcKIyfsbGxsTdlryoGkmTWGx7kJdDNt7CxsbE3ZU9CT8qJefspud9sKmFjY2NvxE4WyA9iTsqV6lHOfCOwsbGxd2XnjZu8gJncT8B5+YSNjY19Ajv66x8flJwMEqrPb1Zg2NjY2F/OToqT3oGbvJipwqpNLmxsbOy92fO0lKe6auLsgRccvsTGxsb+KvZkNJu0+KtlQ75isi42Njb2Oexe6Hkyq25ZvtHRuBobGxt7U3YvqVSXnIwKekhsbGxs7DzBVJtBecnRK2ze3sfGxsbemr0qmeWbsvbJ0c+DjY2NfQA7aQDNy5LeigsO1mNjY2Nvyp4MXHt3JkPi6iZiY2Njn8CuJoM83Eki7I2Nb7YDGxsbe2t2tbmTH8e5ToG9Yz3NggcbGxv7APYkoHmSq66VrI6NjY2N/cQwOE9Rk8NA2NjY2NhJa36yEUnpMmlFYWNjY5/JrqafyTB47SoLTiphY2Njfzm7d6Smun2TT863DBsbG3tX9jkXNjY2NjY2NjY29sdcv4rhr/I+N94wAAAAAElFTkSuQmCC">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/mysql/">mysql</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=事务概念&url=http://xuanzh.cc/2017/11/01/mysql-transaction-concept/index.html&pic=http://xuanzh.cc/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h3 id="事务特性"><a href="#事务特性" class="headerlink" title="事务特性"></a>事务特性</h3><h5 id="1、原子性（Atomic）："><a href="#1、原子性（Atomic）：" class="headerlink" title="1、原子性（Atomic）："></a>1、原子性（Atomic）：</h5><p>表示组成一个事务的多个数据库操作是一个不可分割的原子单元，只有所有的操作执行成功，整个事务才提交，事务中的任何一个数据库操作失败，则已经进行的操作都必须撤销让数据库返回到初始状态</p>
+<h5 id="2、一致性（Consistency）："><a href="#2、一致性（Consistency）：" class="headerlink" title="2、一致性（Consistency）："></a>2、一致性（Consistency）：</h5><p>事务操作成功后，数据库和它所处的状态必须是一致的，即数据不会被破坏</p>
+<h5 id="3、隔离性（Isolation）："><a href="#3、隔离性（Isolation）：" class="headerlink" title="3、隔离性（Isolation）："></a>3、隔离性（Isolation）：</h5><p>在并发数据操作时，不同的事务拥有各自的数据空间，他们的操作不会对对方造成干扰。准确的说，并非要求做到完全无干扰，数据库规定了多种事务隔离级别不同级别对应的干扰程度不同，隔离界别越高，数据一致性也越好，但并发性也越弱。</p>
+<h5 id="4、持久性（Durabiliy）："><a href="#4、持久性（Durabiliy）：" class="headerlink" title="4、持久性（Durabiliy）："></a>4、持久性（Durabiliy）：</h5><p>一旦事务提交成功后，事务中的所有数据操作都必须被持久化到数据库中，即使事务提交后，数据库马上崩溃，再重启数据库时，也必须保证能够通过某种机制恢复数据。</p>
+<hr>
+<h3 id="数据并发问题"><a href="#数据并发问题" class="headerlink" title="数据并发问题"></a>数据并发问题</h3><p>数据库中的相同数据被多个事务访问时，如果没有采取必要的隔离措施，就回导致各种并发问题，破坏数据的完整性。这些问题可以归纳为如下五类，包括三类数据读问题和两类数据更新问题：</p>
+<h4 id="三类数据读为题"><a href="#三类数据读为题" class="headerlink" title="三类数据读为题"></a>三类数据读为题</h4><h5 id="1、-脏读（dirty-read）："><a href="#1、-脏读（dirty-read）：" class="headerlink" title="1、 脏读（dirty read）："></a>1、 脏读（dirty read）：</h5><p>A事务读取B事务尚未提交的更改数据，并在这个数据基础上操作。恰巧B事务回滚，那么A事务读到的数据本身是不被承认的。例子如下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>时间</strong></th>
+<th style="text-align:left"><strong>A事务</strong></th>
+<th style="text-align:left"><strong>B事务</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">T1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">开始事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T2</td>
+<td style="text-align:left">开始事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">查询账户余额为1000元</td>
+</tr>
+<tr>
+<td style="text-align:left">T4</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">取出500，把账户余额更新为500元</td>
+</tr>
+<tr>
+<td style="text-align:left">T5</td>
+<td style="text-align:left">查询账户余额为500元（脏读）</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T6</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">撤销事务，账户余额恢复为1000</td>
+</tr>
+<tr>
+<td style="text-align:left">T7</td>
+<td style="text-align:left">汇入100账户余额变为600元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T8</td>
+<td style="text-align:left">提交事务</td>
+<td style="text-align:left">.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-不可重复读（unrepeated-read）："><a href="#2-不可重复读（unrepeated-read）：" class="headerlink" title="2. 不可重复读（unrepeated read）："></a>2. 不可重复读（unrepeated read）：</h5><p>事务读取了B事务已经提交的更改数据</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>时间</strong></th>
+<th style="text-align:left"><strong>A事务</strong></th>
+<th style="text-align:left"><strong>B事务</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">T1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">开始事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T2</td>
+<td style="text-align:left">开始事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">查询余额为1000元</td>
+</tr>
+<tr>
+<td style="text-align:left">T4</td>
+<td style="text-align:left">查询余额为1000元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T5</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">取出100将余额变为900元</td>
+</tr>
+<tr>
+<td style="text-align:left">T6</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">提交事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T7</td>
+<td style="text-align:left">查询账户余额为900元（与T4读取的不一样）</td>
+<td style="text-align:left">.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="3-幻象读（phantom-read）："><a href="#3-幻象读（phantom-read）：" class="headerlink" title="3. 幻象读（phantom read）："></a>3. 幻象读（phantom read）：</h5><p>事务读取了B事务提交的新增数据，这时A事务将出现幻象读的问题。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>时间</strong></th>
+<th style="text-align:left"><strong>A事务</strong></th>
+<th style="text-align:left"><strong>B事务</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">T1</td>
+<td style="text-align:left">开始事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T2</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">开始事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T3</td>
+<td style="text-align:left">统计总存款数为10000元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T4</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">新增账户，存款为100元</td>
+</tr>
+<tr>
+<td style="text-align:left">T5</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">提交事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T6</td>
+<td style="text-align:left">统计总存款数为10100元（和T3统计的不一样）</td>
+<td style="text-align:left">.</td>
+</tr>
+</tbody>
+</table>
+<p><em>注意：幻象读和不可重复读是两个不同的概念，前者是指读到了其他事务已经提交的新增的数据，后者是指读到了其他事务已经提交的更新数据（修改或者删除）。</em><br><em>为了避免这两种情况，采用的对策是不一样的，防止读到更改数据，只需要对操作的数据添加行级锁，阻止操作中的数据变化；防止读到新增的数据，则往往需要添加表级锁，将整个表锁定，防止新增数据。</em></p>
+<h4 id="两类数据更新问题"><a href="#两类数据更新问题" class="headerlink" title="两类数据更新问题"></a>两类数据更新问题</h4><h5 id="1、-第一类丢失更新："><a href="#1、-第一类丢失更新：" class="headerlink" title="1、 第一类丢失更新："></a>1、 第一类丢失更新：</h5><p>事务撤销时，吧已经提交的B事务的更新数据覆盖了。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>时间</strong></th>
+<th style="text-align:left"><strong>A事务</strong></th>
+<th style="text-align:left"><strong>B事务</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">T1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">开始事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T2</td>
+<td style="text-align:left">开始事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">查询账户余额为1000元</td>
+</tr>
+<tr>
+<td style="text-align:left">T4</td>
+<td style="text-align:left">查询账户余额为1000元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T5</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">存入100，将账户余额更新为1100</td>
+</tr>
+<tr>
+<td style="text-align:left">T6</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">提交事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T7</td>
+<td style="text-align:left">取出100，将账户余额更新为900元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T8</td>
+<td style="text-align:left">撤销事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T9</td>
+<td style="text-align:left">余额恢复为1000元（丢失更新）</td>
+<td style="text-align:left">.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2、-第二类丢失更新："><a href="#2、-第二类丢失更新：" class="headerlink" title="2、 第二类丢失更新："></a>2、 第二类丢失更新：</h5><p>事务覆盖B事务已经提交的数据，造成B事务所做的操作丢失。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>时间</strong></th>
+<th style="text-align:left"><strong>A事务</strong></th>
+<th style="text-align:left"><strong>B事务</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">T1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">开始事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T2</td>
+<td style="text-align:left">开始事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">查询账户余额为1000元</td>
+</tr>
+<tr>
+<td style="text-align:left">T4</td>
+<td style="text-align:left">查询账户余额为1000元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T5</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">存入100，将账户余额更新为1100</td>
+</tr>
+<tr>
+<td style="text-align:left">T6</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">提交事务</td>
+</tr>
+<tr>
+<td style="text-align:left">T7</td>
+<td style="text-align:left">存入100，将账户余额更新为1100元</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T8</td>
+<td style="text-align:left">提交事务</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">T9</td>
+<td style="text-align:left">余额变为1100元（丢失更新）</td>
+<td style="text-align:left">.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>虽然数据库为我们提供了锁的DML操作方式，但是直接使用锁管理是比较麻烦的，所以数据库为我们提供了自动锁机制。只要我们（用户）指定事务隔离级别，数据库就回自动分析事务中的 SQL 语句，然后自动为事务操作的数据资源加上合适的锁，此外数据库还会维护这些锁，当一个资源上的锁数目太多时，自动进行锁升级以提高系统的运行性能。（这一过程对我们来说是透明的）</p>
+<p>ANSI/ISO SQL 92 标准定义了四个等级的事务耿立级别，如下图：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">隔离界别</th>
+<th style="text-align:left">脏读</th>
+<th style="text-align:left">不可重复读</th>
+<th style="text-align:left">幻象读</th>
+<th style="text-align:left">第一类更新丢失</th>
+<th style="text-align:left">第二类更新丢失</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">READ UNCOMMITED</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">允许</td>
+</tr>
+<tr>
+<td style="text-align:left">READ COMMITED</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">允许</td>
+</tr>
+<tr>
+<td style="text-align:left">REPEATABLE READ</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">允许</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">不允许</td>
+</tr>
+<tr>
+<td style="text-align:left">SERIALIZABLE</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">不允许</td>
+<td style="text-align:left">不允许</td>
+</tr>
+</tbody>
+</table>
+<p><em>注意：事务的隔离级别和数据库的并发现是对立的，两种此增彼长。</em></p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'http://xuanzh.cc/2017/11/01/mysql-transaction-concept/', // 可选。默认为 location.href
+        owner: 'zxure',
+        repo: 'blog_comments',
+        oauth: {
+            client_id: '4b3859c4906ac4d69eb1',
+            client_secret: '729e6f352073509282ae20ad585765d9f76aff54',
+        },
+    })
+    gitment.render('container')
+</script>
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/11/01/java-thread/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/10/31/centos-jdk-install/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="xuanzh.cc's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        zx_stone@163.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: zx_stone@163.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/11/">十一月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">6</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/desingPattern/">desingPattern<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/java/">java<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/java/多线程/">多线程<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/linux/">linux<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/categories/linux/运维/">运维<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/mysql/">mysql<span class="sidebar_archives-count">2</span></a>
+            </ul>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/about" title="关于我">
+                
+                    <i class="material-icons sidebar-material-icons">person</i>
+                
+                关于我
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/links" title="好友链接">
+                
+                好友链接
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/6401350393" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-weibo">
+                <span class="visuallyhidden">Weibo</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/yesman-52" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;xuanzh.cc
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?wgjW/HuQG9JDgvPDPoRAng==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?LT4t6iE6m8TO1BLGGiNJqA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+    
+        <script>lsloader.load("hanabi","/js/hanabi-browser-bundle.js?5+2z7ZZmFuZK5IcimlZbxw==", true)</script>
+    
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+        
+            HanabiBrowser.clearColors();
+        
+        
+        HanabiBrowser.start('pre code',true);
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2015;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

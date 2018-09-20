@@ -54,7 +54,7 @@
     
     <title>
         
-            归档 | 
+            线程的停止（中断） | 
         
         xuanzh.cc
     </title>
@@ -65,7 +65,7 @@
 
     <meta name="format-detection" content="telephone=no"/>
     <meta name="description" itemprop="description" content="xuanzh.cc`s blog">
-    <meta name="keywords" content="xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps">
+    <meta name="keywords" content="xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps,java,多线程">
     <meta name="theme-color" content="#0097A7">
 
     <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -226,7 +226,7 @@
     <!-- WebAPP Icons -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="xuanzh.cc">
-    <meta name="msapplication-starturl" content="http://xuanzh.cc/archives/">
+    <meta name="msapplication-starturl" content="http://xuanzh.cc/2017/11/06/java-thread-stop/">
     <meta name="msapplication-navbutton-color" content="#0097A7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="xuanzh.cc">
@@ -241,13 +241,16 @@
     
 
     <!-- The Open Graph protocol -->
-    <meta property="og:url" content="http://xuanzh.cc/archives/">
+    <meta property="og:url" content="http://xuanzh.cc/2017/11/06/java-thread-stop/">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="归档 | xuanzh.cc">
+    <meta property="og:title" content="线程的停止（中断） | xuanzh.cc">
     <meta property="og:image" content="/img/favicon.png">
     <meta property="og:description" content="xuanzh.cc`s blog">
-    
+    <meta property="og:article:tag" content="java"> <meta property="og:article:tag" content="多线程"> 
 
+    
+        <meta property="article:published_time" content="Mon Nov 06 2017 18:09:37 GMT+0800">
+        <meta property="article:modified_time" content="Wed Nov 08 2017 09:35:07 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -255,13 +258,43 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://xuanzh.cc/archives/index.html" />
+        <link rel="canonical" href="http://xuanzh.cc/2017/11/06/java-thread-stop/index.html" />
     
 
     <!-- Structured-data for SEO -->
     
         
 
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://xuanzh.cc/2017/11/06/java-thread-stop/index.html",
+    "headline": "线程的停止（中断）",
+    "datePublished": "Mon Nov 06 2017 18:09:37 GMT+0800",
+    "dateModified": "Wed Nov 08 2017 09:35:07 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "xuanzh.cc",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "When what you love gets taken from you,,  you wanna know the truth!"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "xuanzh.cc",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",java,多线程xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps",
+    "description": "xuanzh.cc`s blog",
+}
+</script>
 
 
     
@@ -316,655 +349,473 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程的停止（中断）："><span class="post-toc-number">1.</span> <span class="post-toc-text">线程的停止（中断）：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1、stop-方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1、stop 方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2、设置线程标记，代码如下"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">2、设置线程标记，代码如下</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3、线程中断"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3、线程中断:</span></a></li></ol></li></ol>
+    </ul>
     
 
-    <!-- Normal Post -->
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         
             <!-- Random Thumbnail -->
             <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/15/thread-pool/">线程池</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            为了避免频繁的创建和销毁线程带来的开销，我们可以使用线程池，让线程得以复用。JDK为我们提供了之方面的支持。类图如下：
-
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/15/thread-pool/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 15, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/14/lock-reentrantLock/">并发包 - ReentrantLock</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            谈到锁，就应该马上想起 synchronized 关键字，他可以用到方法上，也可以用于代码块上，作用都是获取锁。它的加锁和释放锁都是由jvm自动完成...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/14/lock-reentrantLock/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 14, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/12/design-pattern-singleton/">单例模式</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            定义一个类有且仅有...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/12/design-pattern-singleton/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 12, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/desingPattern/">desingPattern</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/10/thread-wait-notify/">线程间通信 - wait 、ntoify 和 notifyAll</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            为了是多线程之间的协作，JDK提供了 wait(), nitify() 和 notifyAll() 这些方法。调用这些方法的时候，必须用 synch...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/10/thread-wait-notify/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 10, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/08/java-thread-join/">线程 join</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/08/java-thread-join/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 08, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/06/java-thread-stop/">线程的停止（中断）</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/06/java-thread-stop/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 06, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/01/java-thread/">java 线程（Thread）</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            1、基本概念：略
-2、线程状态变化图：
-
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/01/java-thread/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 01, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/01/mysql-transaction-concept/">事务概念</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            事务特性
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/01/mysql-transaction-concept/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 01, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/mysql/">mysql</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/10/31/centos-jdk-install/">centos 安装 jdk</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/10/31/centos-jdk-install/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>10月 31, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/linux/">linux</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/10/30/rz-sz-install/">linux 下 rz 与 sz 安装</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            一般我们使用 SSH 客户端（例如 SecureCRT）登陆到linux服务器进行管理，如果我们需要传输本地文件到服务器，...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/10/30/rz-sz-install/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>10月 30, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/linux/">linux</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-
-    
-    <!-- Index nav -->
-        <nav class="material-nav mdl-cell mdl-cell--12-col">
-            <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><button aria-label="Next page" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">arrow_forward</i></button></a>
-        </nav>
-    
-
-    
-        <script type="text/ls-javascript" id="thumbnail-script">
-    var randomNum;
-
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 10; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
-
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
     $('.post_thumbnail-random').addClass('lazy');
-
-        locatePost = locatePost.next();
-    }
 </script>
 
+        
+    
+            <p class="article-headline-p">
+                线程的停止（中断）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>xuanzh.cc</strong>
+        <span>11月 06, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaElEQVR42u3aQW7jMBAEQP//07vXAIGdbo5IKUHpZBgWw+KBnDTn9e9PPy88PDw8PDw8PLyH8V7x8/33+Qhff5mMszY3PDw8vJO8H7ba70O8+ebdn3z3brIE9dzw8PDwDvKSDb3FJ9t9O84Pb+Hh4eE9jPf5SEiOgbVNHw8PD++3894GAWWp3ZbXeHh4eE/jrW3QkwD3cVkLHh4eXsybTHT35xvu9/Dw8PA+8uqWpriMTgKL/NrsUE8ZHh4eXsDL49d2Kp+Dhvx6rI4/8PDw8Dbz2i0+ufTKA9wkekiWCQ8PD+9eXhtJJKT8AGipeHh4eOd584Ag+X1eEE9iETw8PLyTvOQKKtma8zap5GBoi2k8PDy8k7yrNvq8IM7L5VEYgYeHh7eNd21Dah4cJEdIHfvi4eHhbeZddRjkDQd1K0DZkoWHh4d3npcXtfMp5uMUbQ14eHh4m3mTiHbtc1si1wcYHh4e3q28JKrI4+C1crxtNcDDw8M7z8un0jZm5aX8aEw8PDy8I7zJtVMRsA4u1fKFwMPDwzvDyzff9k+uhR2j7/Hw8PA283LSJNjNC/R57IuHh4d3knfVJJJ32yikWHQ8PDy8zby80T8JFNoLsPytYgQ8PDy8zbz2ycPWNg7Ovy+arvDw8PA28NYupa6KD9qAow4j8PDw8Lbx1oLd9ggZTXryHwMeHh7eNl7e/DRZiLz54LKsBQ8PD+9W3uJmPT4kiiXGw8PDeyRvLahdCyaS4wEPDw/vLl5eKOcHRn4lNgk+8PDw8M7zJhdgeZNr3nYwWWI8PDy83by/9+Dh4eHh4eHh4T3g+Q8ZjU8ClkqWxQAAAABJRU5ErkJggg==">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/java/">java</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/多线程/">多线程</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=线程的停止（中断）&url=http://xuanzh.cc/2017/11/06/java-thread-stop/index.html&pic=http://xuanzh.cc/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
     
 </div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h3 id="线程的停止（中断）："><a href="#线程的停止（中断）：" class="headerlink" title="线程的停止（中断）："></a>线程的停止（中断）：</h3><p>线程的结束会由系统自动调度，如果中途想要停掉线程，有如下三种方式</p>
+<h4 id="1、stop-方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）"><a href="#1、stop-方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）" class="headerlink" title="1、stop 方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）"></a>1、stop 方法（该方法已经被废弃，不建议使用，他会直接终止线程，并释放该线程锁持有的所有锁，不能够保证对象的一致性）</h4><p>代码如下:</p>
+<pre><code>/**
+* 用户类
+*/
+public class User {
+    /* 用户ID1 */
+    private int userId1;
+    /* 用户ID2 */
+    private int userId2;
+
+    /**
+      * constructor。。
+      * 为了便于演示,这里将两个id设置为一样
+      * @param userId
+      */
+    public User(int userId) {
+        this.userId1 = userId;
+        this.userId2 = userId;
+    }
+
+    public int getUserId1() {
+        return userId1;
+    }
+
+    public void setUserId1(int userId1) {
+        this.userId1 = userId1;
+    }
+
+    public int getUserId2() {
+        return userId2;
+    }
+
+    public void setUserId2(int userId2) {
+        this.userId2 = userId2;
+    }
+
+    //getter 和 setter 省略......
+
+    @Override
+    public String toString() {
+        return &quot;User{&quot; +
+                &quot;userId1=&quot; + userId1 +
+                &quot;, userId2=&quot; + userId2 +
+                &#39;}&#39;;
+    }
+}
+
+/*-------------------------------我是的分割线---------------------------------*/
+
+
+/** * 修改用户信息task */
+public class ChangeInfoTask implements Runnable {
+    private User user;
+    private Random random = new Random(System.currentTimeMillis());
+
+    public ChangeInfoTask(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public void run() {
+        synchronized (user) {
+            while(true) {
+                int userId = random.nextInt(50000);
+                user.setUserId1(userId);
+                //这里休眠，是为了使不正常现象出现的概率变大
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                user.setUserId2(userId);
+            }
+        }
+    }
+}
+
+/*-------------------------------我是的分割线---------------------------------*/
+
+/** * 检查信息不一致的 task */
+
+public class CheckForInconsistentTask implements Runnable{
+    private User user;
+
+    public CheckForInconsistentTask(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public void run() {
+        while(true) {
+            synchronized (user) {
+                if(user.getUserId1() != user.getUserId2()) {
+                    System.out.println(&quot;产生了不一致的情况: &quot; + user);
+                }
+            }
+        }
+    }
+}
+
+/*-------------------------------我是的分割线---------------------------------*/
+
+public class TestStop {
+        public static void main(String[] args) throws InterruptedException {
+        User user = new User(1000);
+        //开启检测线程
+        new Thread(new CheckForInconsistentTask(user)).start();
+        while(true){
+            //开启修改线程
+            Thread t = new Thread(new ChangeInfoTask(user));
+            t.start();
+            Thread.sleep(30);
+            t.stop();
+        }
+    }
+}
+</code></pre><p>运行结果如下图：<br><img src="/2017/11/06/java-thread-stop/thread_stop.png"></p>
+<h4 id="2、设置线程标记，代码如下"><a href="#2、设置线程标记，代码如下" class="headerlink" title="2、设置线程标记，代码如下"></a>2、设置线程标记，代码如下</h4><pre><code>public class TestsStopFlag {
+
+    public static void main(String[] args) throws InterruptedException {
+        ThreadTest t = new ThreadTest();
+        t.start();
+
+        Thread.sleep(3000);
+        t.stopMe();
+    }
+}
+
+class ThreadTest extends Thread{
+        /* 运行标记 */
+        private volatile boolean canRun = true;
+
+        @Override
+        public void run() {
+            while(true) {
+                if(!canRun){
+                    System.out.println(&quot;线程被标记为中断，即将停止！&quot;);
+                    break ;
+                } else {
+                    System.out.println(&quot;running ...... &quot;);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        /**
+                  * 设置标记为false
+                  */
+        public void stopMe() {
+            this.canRun = false;
+        }
+    }
+}
+</code></pre><p><strong>结果如下图：</strong><br><img src="/2017/11/06/java-thread-stop/thread_stop_boolean_flag.png"></p>
+<h4 id="3、线程中断"><a href="#3、线程中断" class="headerlink" title="3、线程中断:"></a>3、线程中断:</h4><p> 线程中断不会是线程立即退出，而是发送一个中断通知给线程。</p>
+<p><strong>中断线程的方法：</strong></p>
+<p>i、<code>public void interrupt()    //中断线程</code></p>
+<p>通知线程中断，也就是设置中断标志位</p>
+<p>ii、<code>public boolean isInterrupted()   //判断是否被中断</code></p>
+<p>实例方法，通过检查中断标记为来判断该线程是否被中断</p>
+<p>iii、<code>public static boolean interrupted()   //判断当前线程是否被中断，并且清除当前中断状态</code></p>
+<p>在中断线程的时候，我们可以用 <code>isInterrupted</code>来判断当前线程是否被设置了中断标记为，如果设置了就可以执行现在中断逻辑，比如退出循环等。示例代码如下</p>
+<pre><code>public class TestInterrupt {
+    public static void main(String[] args) throws InterruptedException {
+        ThreadInterruptTest t = new ThreadInterruptTest();
+        t.start();
+
+        Thread.currentThread().sleep(5000);
+    }
+}
+
+class ThreadInterruptTest extends Thread {
+    /* 运行标记 */
+    private volatile boolean canRun = true;
+
+    @Override
+    public void run() {
+        while (true) {
+            //如果当前线程被设置为中断
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println(&quot;线程被中断......&quot;);
+                break;
+            }
+
+            //这里是其他的逻辑
+            //...
+        }
+    }
+}
+</code></pre><p>另外如果循环体中有 wait 和 sleep 这样的操作，那么如果按照之前的设计标记为分方法结束线程，则有点无从下手，但是如果用中断方法，就会很简单。</p>
+<p>Thread.sleep() 方法：</p>
+<pre><code>public static native void sleep(long millis) throw InterruptedException
+</code></pre><p>该方法会让当前线程休眠若干毫秒，若在休眠期间，线程被中断，则会抛出 <code>InterruptedException</code>异常，此时他会清除中断标记，如果不做处理，则在下一次循环的时候，就无法捕获该标记，所以在捕获该异常的时候，要再次设置中断标。如下代码：</p>
+<pre><code>循环体 {
+  ......
+   try {
+      Thread.sleep(2000);
+   } catch (InterruptedException e) {
+      e.printStackTrace();
+      Thread.currentThread().interrupt();
+   }
+......
+}
+</code></pre><p>类似的 wait 方法也会抛出 <code>InterruptedException</code>异常，我们查看jdk文档可以看到如下的注释：</p>
+<pre><code>    /**
+     * @param      timeout   the maximum time to wait in milliseconds.
+     * @throws  IllegalArgumentException      if the value of timeout is negative.
+     * @throws  IllegalMonitorStateException  if the current thread is not the owner of the object&#39;s monitor.
+     * @throws  InterruptedException if any thread interrupted the current thread before or while the current thread was waiting for a notification.  The &lt;i&gt;interrupted status&lt;/i&gt; of the current thread is cleared when this exception is thrown.
+     * @see        java.lang.Object#notify()
+     * @see        java.lang.Object#notifyAll()
+     */
+    public final native void wait(long timeout) throws InterruptedException;
+</code></pre><p>在抛出异常的时候也会清除中断标记。</p>
+<p>类似的还有 Thread 的 实例方法 join：</p>
+<pre><code>     /* 
+      * @throws  InterruptedException if any thread has interrupted the current thread. The &lt;i&gt;interrupted status&lt;/i&gt; of the current thread is cleared when this exception is thrown.
+      */
+    public final void join() throws InterruptedException {
+        join(0);
+    }
+</code></pre>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'http://xuanzh.cc/2017/11/06/java-thread-stop/', // 可选。默认为 location.href
+        owner: 'zxure',
+        repo: 'blog_comments',
+        oauth: {
+            client_id: '4b3859c4906ac4d69eb1',
+            client_secret: '729e6f352073509282ae20ad585765d9f76aff54',
+        },
+    })
+    gitment.render('container')
+</script>
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/11/08/java-thread-join/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/11/01/java-thread/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     

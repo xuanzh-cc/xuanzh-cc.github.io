@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://imsun.github.io"/>
+
+
+
+    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
+
+    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+
+    <link rel="dns-prefetch" href="https://s95.cnzz.com"/>
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            线程池 | 
+        
+        xuanzh.cc
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="xuanzh.cc`s blog">
+    <meta name="keywords" content="xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps,java,多线程">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?uVzgA6RLrOm13Ukw8Qgy+A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?ezyEvm8ST5CGfpA+kFFi1g==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="xuanzh.cc">
+    <meta name="msapplication-starturl" content="http://xuanzh.cc/2017/11/15/thread-pool/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="xuanzh.cc">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    <meta name="baidu-site-verification" content="v4WBhNkuhm" />
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://xuanzh.cc/2017/11/15/thread-pool/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="线程池 | xuanzh.cc">
+    <meta property="og:image" content="/img/favicon.png">
+    <meta property="og:description" content="xuanzh.cc`s blog">
+    <meta property="og:article:tag" content="java"> <meta property="og:article:tag" content="多线程"> 
+
+    
+        <meta property="article:published_time" content="Wed Nov 15 2017 18:58:57 GMT+0800">
+        <meta property="article:modified_time" content="Thu Mar 15 2018 19:16:46 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://xuanzh.cc/2017/11/15/thread-pool/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://xuanzh.cc/2017/11/15/thread-pool/index.html",
+    "headline": "线程池",
+    "datePublished": "Wed Nov 15 2017 18:58:57 GMT+0800",
+    "dateModified": "Thu Mar 15 2018 19:16:46 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "xuanzh.cc",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "When what you love gets taken from you,,  you wanna know the truth!"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "xuanzh.cc",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",java,多线程xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps",
+    "description": "xuanzh.cc`s blog",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108909098-1', 'auto');ga('send', 'pageview');
+</script>
+    
+    
+        <script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?5b697cc4502a929f5229e5b9f154e3ba';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+    
+        <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1266854461&web_id=1266854461" language="JavaScript"></script>
+</div>
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Executor"><span class="post-toc-number">1.</span> <span class="post-toc-text">Executor</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ExecutorService"><span class="post-toc-number">2.</span> <span class="post-toc-text">ExecutorService</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ScheduledExecutorService"><span class="post-toc-number">3.</span> <span class="post-toc-text">ScheduledExecutorService</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ThreadPoolExecutor"><span class="post-toc-number">4.</span> <span class="post-toc-text">ThreadPoolExecutor</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Executors"><span class="post-toc-number">5.</span> <span class="post-toc-text">Executors</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#Executors内部的实现"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">Executors内部的实现:</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#线程池任务队列（BlockingQueue-workQueue）的种类和各自的特点："><span class="post-toc-number">5.2.</span> <span class="post-toc-text">线程池任务队列（BlockingQueue workQueue）的种类和各自的特点：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#直接提交的队列（SynchronousQueue）"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">直接提交的队列（SynchronousQueue）</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#有界的任务队列（ArrayBlockingQueue）"><span class="post-toc-number">5.2.2.</span> <span class="post-toc-text">有界的任务队列（ArrayBlockingQueue）</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#无界的任务队列（LinkedBlockingQueue）"><span class="post-toc-number">5.2.3.</span> <span class="post-toc-text">无界的任务队列（LinkedBlockingQueue）</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#优先任务队列（PriorityBlockingQueue）"><span class="post-toc-number">5.2.4.</span> <span class="post-toc-text">优先任务队列（PriorityBlockingQueue）</span></a></li></ol></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#线程池拒绝策略："><span class="post-toc-number">5.3.</span> <span class="post-toc-text">线程池拒绝策略：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#AbortPolicy"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">AbortPolicy</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#CallerRunsPolicy"><span class="post-toc-number">5.3.2.</span> <span class="post-toc-text">CallerRunsPolicy</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#DiscardOldestPolicy"><span class="post-toc-number">5.3.3.</span> <span class="post-toc-text">DiscardOldestPolicy</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#DiscardPolicy"><span class="post-toc-number">5.3.4.</span> <span class="post-toc-text">DiscardPolicy</span></a></li></ol></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#线程工厂（ThreadFactory）"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">线程工厂（ThreadFactory）</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#线程池出错时候的异常堆栈处理"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">线程池出错时候的异常堆栈处理</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                线程池
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>xuanzh.cc</strong>
+        <span>11月 15, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZElEQVR42u3aQW7DMAwEwPz/0+0D2jpLUpLdYHwKjNjS+CAJS76+Pvp64eHh4eHh4eHhPYz3iq+/nvrrzvX7f5nW5TsLc8PDw8M7wnuz1AaTTu5fY37+szk3PDw8vIO8ZHLJwj3fcnpzw8PDw3syLz9wXx+g8zt4eHh4n8FLooTrp/Dw8PD+Oy8ZuBfL9kKHG7IWPDw8vJiXRwbnfx+t7+Hh4eEFvHJLU3FjqC7rN/eU4eHh4QW8fCGe4CcbTHU+eHh4eLt5k6JUHr8mm8E8LMbDw8O7i1ctRE1KYmuLcHh4eHhneIWSfFDoyotb5UnnIQgeHh7eZt6qKGES2s6bX/Hw8PDu4iURQ8KutmRVY44FrQN4eHh4A1510slBPCclh+zFYQQeHh7eIl5evprEDdXNozkiHh4e3mZesuzmwUQ15sg/cd4Ui4eHh/cEXj7FvPkgn0Py6fHw8PBO8nphax4rlJf1fU1XeHh4eIt4yTB5IFsthuWAUdMVHh4e3lJeryEgD3BXRRX56Hh4eHgneasKV5N35sW5URiBh4eHN+Y1l+ClG8kkRMbDw8O7i5cUpfaFvPlY5QIYHh4e3jZerwyWhBp5pFt9qrzv4eHh4Y151SsfJv9MyUZ1XSrDw8PDO8mbLMf5Qt+Lhhf3lOHh4eEt5SULeq8MVl3it2wMeHh4eNt41QV6XubPP9+yrAUPDw/vVl4vtM1j3F6ZDQ8PD+/JvDzkvb5TPWS/mQMeHh7eQV4SRiQRbbUdIf9P1M6Fh4eHd4Q3ORBPmrF6R+o3Hw4PDw9vM+/zLjw8PDw8PDw8vAdc3zrvhpLBFd4+AAAAAElFTkSuQmCC">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/java/">java</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/多线程/">多线程</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=线程池&url=http://xuanzh.cc/2017/11/15/thread-pool/index.html&pic=http://xuanzh.cc/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>为了避免频繁的创建和销毁线程带来的开销，我们可以使用线程池，让线程得以复用。JDK为我们提供了之方面的支持。类图如下：</p>
+<img src="/2017/11/15/thread-pool/thread-pool.png">
+<h4 id="Executor"><a href="#Executor" class="headerlink" title="Executor"></a>Executor</h4><p>线程池的顶级接口，虽然该接口是顶级接口，但是它里面只有一个 void execute(Runnable command); 方法，所以它可以被看做是一个命令执行器，而不是一个线程池。</p>
+<h4 id="ExecutorService"><a href="#ExecutorService" class="headerlink" title="ExecutorService"></a>ExecutorService</h4><p>它是真正的线程池接口，该接口内声明方法如下图，里面已经包含了线程池的方法。<br><img src="/2017/11/15/thread-pool/thread-pool-executor-service.png"></p>
+<h4 id="ScheduledExecutorService"><a href="#ScheduledExecutorService" class="headerlink" title="ScheduledExecutorService"></a>ScheduledExecutorService</h4><p>它在 ExecutorService 的基础上扩展了定时任务和周期性任务 的功能，如下方法。</p>
+<pre><code>/**
+在指定的时间后执行任务
+*/
+public ScheduledFuture&lt;?&gt; schedule(Runnable command, long delay, TimeUnit unit);
+
+/**
+在指定的时间后执行一个 callable，并返回ScheduledFuture
+*/
+public &lt;V&gt; ScheduledFuture&lt;V&gt; schedule(Callable&lt;V&gt; callable, long delay, TimeUnit unit);
+
+/**
+在指定的延时 initialDelay 后开始每隔 period 时间就执行一次 command，
+如果 任务执行的时间超过了 period，则在该任务执行完毕后马上开始下一次执行，不会出现任务堆叠的情况。
+*/
+public ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit);
+
+/**
+在指定的延时 initialDelay 后开始周期性的执行任务 command，每隔任务调度（上一个任务执行完毕到下一个任务开始）之间的间隔为 delay
+*/
+public ScheduledFuture&lt;?&gt; scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit);
+</code></pre><h4 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h4><p>线程池的默认实现</p>
+<h4 id="Executors"><a href="#Executors" class="headerlink" title="Executors"></a>Executors</h4><p>类似一个工厂类，通过该类里面的静态方法可以方便的得到有特定功能的线程池，方法如下：</p>
+<pre><code>/**
+该方法返回一个固定线程数量的线程池，池中的线程数量始终不变。当有新任务提交时，如果池中有空闲的线程，则立即执行，否则就把该任务缓存到任务队列LinkedBlockingQueue中，等到后面又空闲线程时，再执行该任务。
+*/
+public static ExecutorService newFixedThreadPool(int nThread)
+
+/**
+该方法返回一个只有一个线程的线程池。如果有新的任务被提交时，且线程不空闲的时候，该任务会被缓存带一个任务队列LinkedBlockingQueue中，等到线程空闲时候再执行。
+*/
+public static ExecutorService newSingleThreadExecutor()
+
+/**
+该方法返回一个可以根据实际情况调整的线程数量的线程池，线程池里面线程的数量不确定。当有新的任务提交时，如果有空闲的线程，则用空闲的线程来执行该任务，否则就会创建一个新的线程来执行任务。
+*/
+public static ExecutorService newCachedThreadPool()
+
+/**
+该方法返回一个数量为 1 的ScheduledExecutorService 线程池对象。该对象可以支持定时任务。
+*/
+public static ScheduledExecutorService newSingleThreadScheduledExecutor()
+
+/**
+该方法返回一个指定线程数量的 ScheduledExecutorService 对象。
+*/
+public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize);
+</code></pre><h5 id="Executors内部的实现"><a href="#Executors内部的实现" class="headerlink" title="Executors内部的实现:"></a>Executors内部的实现:</h5><pre><code>public ThreadPoolExecutor(int corePoolSize,  
+                          int maximumPoolSize,
+                          long keepAliveTime,
+                          TimeUnit unit,
+                          BlockingQueue&lt;Runnable&gt; workQueue,
+                          ThreadFactory threadFactory,
+                          RejectedExecutionHandler handler)
+
+</code></pre><p>参数说明：</p>
+<ul>
+<li>corePoolSize ：指定了线程池中的线程数量</li>
+<li>maximumPoolSize ：制定了线程池中的最大线程数量</li>
+<li>keepAliveTime ：当线程池的数量超过 corePoolSize 时，在超过keepAliveTime后如果这些多余的线程空闲，就会被回收</li>
+<li>unit ：时间单位</li>
+<li>workQueue ：任务队列，当心提交的任务来不及执行的时候，就会被缓存到该队列</li>
+<li>threadFactory ： 线程工厂，用于创建线程</li>
+<li>handler ：拒绝策略。当任务来不及执行时，如何拒绝任务</li>
+</ul>
+<h5 id="线程池任务队列（BlockingQueue-workQueue）的种类和各自的特点："><a href="#线程池任务队列（BlockingQueue-workQueue）的种类和各自的特点：" class="headerlink" title="线程池任务队列（BlockingQueue workQueue）的种类和各自的特点："></a>线程池任务队列（BlockingQueue<runnable> workQueue）的种类和各自的特点：</runnable></h5><h6 id="直接提交的队列（SynchronousQueue）"><a href="#直接提交的队列（SynchronousQueue）" class="headerlink" title="直接提交的队列（SynchronousQueue）"></a>直接提交的队列（SynchronousQueue）</h6><p>SynchronousQueue是一种特殊的 BlockQueue，它没有容量，每一个插入操作都要等待一个相应的删除操作，每一个删除操作都必须等待一个相应的插入操作。当任务队列使用 SynchronousQueue 时，任务不会被缓存到该队列中，而总是提交给线程执行，如果没有空闲线程，或者线程数量已经到了最大值，就回执行拒绝策略。所以在使用 SynchronousQueue 的时候，一般要设置比较大的 maxxmumPoolSize，否则会很容易执行拒绝策略。</p>
+<h6 id="有界的任务队列（ArrayBlockingQueue）"><a href="#有界的任务队列（ArrayBlockingQueue）" class="headerlink" title="有界的任务队列（ArrayBlockingQueue）"></a>有界的任务队列（ArrayBlockingQueue）</h6><p>使用ArrayBlockingQueue作为任务队列时候，要指定一个队列的最大值用于构造ArrayBlockingQueue，当有新的任务提交且没有空闲线程，如果线程池数量小于corePoolSize，则创建新的线程用于执行任务，否则就将任务缓存到任务队列中，如果任务队列已满，且线程池数量小于 maximumPoolSize 的时候，创建新的线程用于执行任务，否则执行拒绝策略。（只有当任务队列满的时候，才会将线程数量提升到 corePoolSize 之上）</p>
+<h6 id="无界的任务队列（LinkedBlockingQueue）"><a href="#无界的任务队列（LinkedBlockingQueue）" class="headerlink" title="无界的任务队列（LinkedBlockingQueue）"></a>无界的任务队列（LinkedBlockingQueue）</h6><p>当有新的任务提交的时候，如果线程池内线程数量不到 corePoolSize，则创建新的线程执行任务，否则就讲任务缓存到队列中，由于队列是无界的，所以线程池数量到达 corePoolSzie 后就不会再增加了，如果有很多任务不断提交，且任务执行速度跟不上任务提交的速度的话，会造成队列里面的任务不断积累，很容易耗尽系统内存。</p>
+<h6 id="优先任务队列（PriorityBlockingQueue）"><a href="#优先任务队列（PriorityBlockingQueue）" class="headerlink" title="优先任务队列（PriorityBlockingQueue）"></a>优先任务队列（PriorityBlockingQueue）</h6><p>PriorityBlockingQueue是一个特殊的无界队列，但是它可以可以根据任务的优先级进行排序，让优先级高的任务优先执行。</p>
+<h5 id="线程池拒绝策略："><a href="#线程池拒绝策略：" class="headerlink" title="线程池拒绝策略："></a>线程池拒绝策略：</h5><h6 id="AbortPolicy"><a href="#AbortPolicy" class="headerlink" title="AbortPolicy"></a>AbortPolicy</h6><p>该策略直接抛出异常 RejectedExecutionException ，阻止系统正常工作。 实现类为 public static class AbortPolicy implements RejectedExecutionHandler</p>
+<h6 id="CallerRunsPolicy"><a href="#CallerRunsPolicy" class="headerlink" title="CallerRunsPolicy"></a>CallerRunsPolicy</h6><p>只要线程池未关闭，该策略就在调用者的线程中执行该任务，这样很可能造成系统的性能急剧下降。实现类为：public static class CallerRunsPolicy implements RejectedExecutionHandler</p>
+<h6 id="DiscardOldestPolicy"><a href="#DiscardOldestPolicy" class="headerlink" title="DiscardOldestPolicy"></a>DiscardOldestPolicy</h6><p>丢弃最老的一个任务，不做任何的处理。实现类为：public static class DiscardOldestPolicy implements RejectedExecutionHandler</p>
+<h6 id="DiscardPolicy"><a href="#DiscardPolicy" class="headerlink" title="DiscardPolicy"></a>DiscardPolicy</h6><p>直接丢弃无法处理的任务，不做任何处理。实现类为： public static class DiscardPolicy implements RejectedExecutionHandler</p>
+<h5 id="线程工厂（ThreadFactory）"><a href="#线程工厂（ThreadFactory）" class="headerlink" title="线程工厂（ThreadFactory）"></a>线程工厂（ThreadFactory）</h5><p>线程工厂可以让我们自定义线程，通过为线程设置特定的名称，让我们后续的调试更方便。也可以自由的设置线程的状态和优先级等等。示例代码如下:</p>
+<pre><code>/**
+可命名线程组 线程工厂
+*/
+public class NamedThreadFactory implements ThreadFactory {
+
+    final ThreadGroup group;
+    final AtomicInteger threadNumber = new AtomicInteger(1);
+    final String namePrefix;
+
+    public NamedThreadFactory(ThreadGroup group, String name) {
+        this.group = group;
+        namePrefix = group.getName() + &quot;:&quot; + name;
+    }
+
+    public Thread newThread(Runnable r) {
+        Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
+        return t;
+    }
+
+}
+</code></pre><h5 id="线程池出错时候的异常堆栈处理"><a href="#线程池出错时候的异常堆栈处理" class="headerlink" title="线程池出错时候的异常堆栈处理"></a>线程池出错时候的异常堆栈处理</h5><ul>
+<li>当使用 execute() 方法提交的任务在执行的时候出现异常，只会打印出执行该任务的线程的堆栈信息，而不会打印出任务提交线程的堆栈信息。</li>
+<li>使用 submit() 方法提交的任务在执行的时候出现异常，如果不 get() 的haunted，是不会打印出任何异常信息的，但也只会得到和execute() 方法一样的异常信息。</li>
+</ul>
+<p>如果想要得到完整的堆栈异常信息，则需要将ThreadPoolExecutor 进行扩展，在提交任务的时候传入将提交任务的线程的堆栈信息保存起来。。如下代码：</p>
+<pre><code>public TraceThreadPoolExecutor extends ThreadPollExecutor{ 
+
+    ......
+    //略
+    ......
+
+    @Override
+    public void execute(Runnable command) {
+        super.execute(wrap(command, new Exception(&quot;exception stack trace&quot;), Thread.currentThread().getName()));
+    }
+
+    @Override
+    public Future&lt;?&gt; submit(Runnable task) {
+        return super.submit(wrap(task, new Exception(&quot;exception stack trace&quot;), Thread.currentThread().getName()));
+    }
+
+    /**
+    clientStack 记录提交的线程的堆栈信息
+    */
+    private Runnable wrap(final Runnable command, final Exception clientStack, String threadName){
+        return new Runnable() {
+            @Override        
+            public void run() {
+                try{
+                    command.run();
+                }catch (Exception e){
+                    clientStack.printStackTrace();
+                    throw e;
+                }
+            }
+        };
+    }
+
+    ......
+    //略
+    ......
+}
+</code></pre><p>上述代码中，wrap 方法被execute 和 submit 方法调用， 传入了一个 exception 信息，该exception 记录了提交任务线程的堆栈信息，当任务执行出异常的时候，就打印出该堆栈信息，从而可以定位到任务是在哪个位置被提交的，很方便bug的排查和修改。</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'http://xuanzh.cc/2017/11/15/thread-pool/', // 可选。默认为 location.href
+        owner: 'zxure',
+        repo: 'blog_comments',
+        oauth: {
+            client_id: '4b3859c4906ac4d69eb1',
+            client_secret: '729e6f352073509282ae20ad585765d9f76aff54',
+        },
+    })
+    gitment.render('container')
+</script>
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/11/14/lock-reentrantLock/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="xuanzh.cc's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        zx_stone@163.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: zx_stone@163.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/11/">十一月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">6</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/desingPattern/">desingPattern<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/java/">java<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/java/多线程/">多线程<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/linux/">linux<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/categories/linux/运维/">运维<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/mysql/">mysql<span class="sidebar_archives-count">2</span></a>
+            </ul>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/about" title="关于我">
+                
+                    <i class="material-icons sidebar-material-icons">person</i>
+                
+                关于我
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/links" title="好友链接">
+                
+                好友链接
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/6401350393" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-weibo">
+                <span class="visuallyhidden">Weibo</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/yesman-52" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;xuanzh.cc
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?wgjW/HuQG9JDgvPDPoRAng==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?LT4t6iE6m8TO1BLGGiNJqA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+    
+        <script>lsloader.load("hanabi","/js/hanabi-browser-bundle.js?5+2z7ZZmFuZK5IcimlZbxw==", true)</script>
+    
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+        
+            HanabiBrowser.clearColors();
+        
+        
+        HanabiBrowser.start('pre code',true);
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2015;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

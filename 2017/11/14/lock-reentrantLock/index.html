@@ -54,7 +54,7 @@
     
     <title>
         
-            归档 | 
+            并发包 - ReentrantLock | 
         
         xuanzh.cc
     </title>
@@ -65,7 +65,7 @@
 
     <meta name="format-detection" content="telephone=no"/>
     <meta name="description" itemprop="description" content="xuanzh.cc`s blog">
-    <meta name="keywords" content="xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps">
+    <meta name="keywords" content="xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps,java,多线程">
     <meta name="theme-color" content="#0097A7">
 
     <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -226,7 +226,7 @@
     <!-- WebAPP Icons -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="xuanzh.cc">
-    <meta name="msapplication-starturl" content="http://xuanzh.cc/archives/">
+    <meta name="msapplication-starturl" content="http://xuanzh.cc/2017/11/14/lock-reentrantLock/">
     <meta name="msapplication-navbutton-color" content="#0097A7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="xuanzh.cc">
@@ -241,13 +241,16 @@
     
 
     <!-- The Open Graph protocol -->
-    <meta property="og:url" content="http://xuanzh.cc/archives/">
+    <meta property="og:url" content="http://xuanzh.cc/2017/11/14/lock-reentrantLock/">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="归档 | xuanzh.cc">
+    <meta property="og:title" content="并发包 - ReentrantLock | xuanzh.cc">
     <meta property="og:image" content="/img/favicon.png">
     <meta property="og:description" content="xuanzh.cc`s blog">
-    
+    <meta property="og:article:tag" content="java"> <meta property="og:article:tag" content="多线程"> 
 
+    
+        <meta property="article:published_time" content="Tue Nov 14 2017 21:42:21 GMT+0800">
+        <meta property="article:modified_time" content="Thu Mar 15 2018 19:51:12 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -255,13 +258,43 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://xuanzh.cc/archives/index.html" />
+        <link rel="canonical" href="http://xuanzh.cc/2017/11/14/lock-reentrantLock/index.html" />
     
 
     <!-- Structured-data for SEO -->
     
         
 
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://xuanzh.cc/2017/11/14/lock-reentrantLock/index.html",
+    "headline": "并发包 - ReentrantLock",
+    "datePublished": "Tue Nov 14 2017 21:42:21 GMT+0800",
+    "dateModified": "Thu Mar 15 2018 19:51:12 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "xuanzh.cc",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "When what you love gets taken from you,,  you wanna know the truth!"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "xuanzh.cc",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",java,多线程xuanzh.cc, xuanzh, java, js, javascript, web, spring, linux, mysql, 运维, devOps",
+    "description": "xuanzh.cc`s blog",
+}
+</script>
 
 
     
@@ -316,655 +349,473 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#与-synchronized-的区别"><span class="post-toc-number">1.</span> <span class="post-toc-text">与 synchronized 的区别</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#标准用法"><span class="post-toc-number">2.</span> <span class="post-toc-text">标准用法</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#中断响应"><span class="post-toc-number">3.</span> <span class="post-toc-text">中断响应</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#tryLock"><span class="post-toc-number">4.</span> <span class="post-toc-text">tryLock</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#Condition"><span class="post-toc-number">5.</span> <span class="post-toc-text">Condition</span></a></li></ol>
+    </ul>
     
 
-    <!-- Normal Post -->
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         
             <!-- Random Thumbnail -->
             <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/15/thread-pool/">线程池</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            为了避免频繁的创建和销毁线程带来的开销，我们可以使用线程池，让线程得以复用。JDK为我们提供了之方面的支持。类图如下：
-
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/15/thread-pool/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 15, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/14/lock-reentrantLock/">并发包 - ReentrantLock</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            谈到锁，就应该马上想起 synchronized 关键字，他可以用到方法上，也可以用于代码块上，作用都是获取锁。它的加锁和释放锁都是由jvm自动完成...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/14/lock-reentrantLock/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 14, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/12/design-pattern-singleton/">单例模式</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            定义一个类有且仅有...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/12/design-pattern-singleton/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 12, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/desingPattern/">desingPattern</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/10/thread-wait-notify/">线程间通信 - wait 、ntoify 和 notifyAll</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            为了是多线程之间的协作，JDK提供了 wait(), nitify() 和 notifyAll() 这些方法。调用这些方法的时候，必须用 synch...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/10/thread-wait-notify/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 10, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/08/java-thread-join/">线程 join</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/08/java-thread-join/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 08, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/06/java-thread-stop/">线程的停止（中断）</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/06/java-thread-stop/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 06, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/01/java-thread/">java 线程（Thread）</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            1、基本概念：略
-2、线程状态变化图：
-
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/01/java-thread/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 01, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/java/">java</a>, <a class="post_category-link" href="/categories/java/多线程/">多线程</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/11/01/mysql-transaction-concept/">事务概念</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            事务特性
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/11/01/mysql-transaction-concept/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>11月 01, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/mysql/">mysql</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/10/31/centos-jdk-install/">centos 安装 jdk</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/10/31/centos-jdk-install/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>10月 31, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/linux/">linux</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/2017/10/30/rz-sz-install/">linux 下 rz 与 sz 安装</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            一般我们使用 SSH 客户端（例如 SecureCRT）登陆到linux服务器进行管理，如果我们需要传输本地文件到服务器，...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/2017/10/30/rz-sz-install/" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.png" width="44px" height="44px" alt="xuanzh.cc's avatar">
-            </div>
-            <div>
-                <strong>xuanzh.cc</strong>
-                <span>10月 30, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/linux/">linux</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-
-    
-    <!-- Index nav -->
-        <nav class="material-nav mdl-cell mdl-cell--12-col">
-            <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><button aria-label="Next page" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">arrow_forward</i></button></a>
-        </nav>
-    
-
-    
-        <script type="text/ls-javascript" id="thumbnail-script">
-    var randomNum;
-
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 10; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
-
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
     $('.post_thumbnail-random').addClass('lazy');
-
-        locatePost = locatePost.next();
-    }
 </script>
 
+        
+    
+            <p class="article-headline-p">
+                并发包 - ReentrantLock
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>xuanzh.cc</strong>
+        <span>11月 14, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACYElEQVR42u3aQY7bQAwEQP//08k1QBJtN2mNBaN0Mtba8ZQOItHD16+vvl54eHh4eHh4eHgP473i6x8LXX57vf6f3/5vtdne8PDw8M7wfnjV/r1E+Zfk/uS/or3h4eHhHeTlr+/rwnC9Tlsq8r3h4eHhPZ/XNtZ5242Hh4f3fbx8E220sdkbHh4e3nle8lrPg9e2MLTlBA8PD++zvPxVfv7z0fM9PDw8vIBXjzQt2PvjrnroCg8PD+8GXntAlTTTyZFYHjTkcQYeHh7eGV4eK7z3QSRFon1MeHh4eCd5s7Z4VgBm0W2Cx8PDwzvJa4+y2mb6XY8jGkHAw8PDu5m3aYLzApMME2ziDzw8PLzzvHZYajNoVQyelivg4eHhfZa3ObLKg+BV6JC31Hh4eHgHefs72+GtpFmvJyPw8PDwbuDNAoI2ztiUkOLX8fDw8G7mteHCJoaYNdP5g8DDw8M7w5uFEe122wOz2T14eHh4J3mzH9uEvPs7V5MReHh4eAte+7LOPxev8mTT+fAWHh4e3s28fOhqNnI6a9PbgBgPDw/vPC9pW9t4dxZP5A+lGLrCw8PDu42XHNW3AWseZ2xKDh4eHt4TeMkm2iZ4ExC/YaYMDw8P70289hoGBIsAIo+P8fDw8M7w7gsgWsz1msmYLB4eHt5JXhs3zCKGPDhu/wsPDw/vU7wkOJiVhFl5aEcN8PDw8J7Mm4W2eZu+AePh4eE9k5cf9s8Kw3WB+WE1PDw8vIO8/aHUrADsiwEeHh7eeV6+3CaYmB2q5aUIDw8P7wzv+y48PDw8PDw8PLwHXL8BeKUWEVKDTeYAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/java/">java</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/多线程/">多线程</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=并发包 - ReentrantLock&url=http://xuanzh.cc/2017/11/14/lock-reentrantLock/index.html&pic=http://xuanzh.cc/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
     
 </div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>谈到锁，就应该马上想起 synchronized 关键字，他可以用到方法上，也可以用于代码块上，作用都是获取锁。它的加锁和释放锁都是由jvm自动完成的，虽然使用方便，但是所以没有那么灵活，下面我们来说说重入锁。</p>
+<p>实现：<code>public class ReentrantLock implements Lock, java.io.Serializable</code></p>
+<h5 id="与-synchronized-的区别"><a href="#与-synchronized-的区别" class="headerlink" title="与 synchronized 的区别"></a>与 synchronized 的区别</h5><table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>序号</strong></th>
+<th><strong>synchronized</strong></th>
+<th><strong>ReentrantLock</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td>锁的获取的释放由JVM控制</td>
+<td>加锁和释放完全有用户控制</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td>无法响应中断</td>
+<td>通过 <code>lockInterruptibly()</code> 方法可以响应中断</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td>获取不到锁的时候会一直等待</td>
+<td>通过 <code>tryLock(long timeout, TimeUnit unit)</code>方法可以在等待指定时间后超时通过 <code>tryLock()</code> 方法尝试获取锁，在获取不到的时候直接返回 false</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td>无对应的配套操作</td>
+<td>有 <code>Condition</code> 作为搭档</td>
+</tr>
+</tbody>
+</table>
+<h5 id="标准用法"><a href="#标准用法" class="headerlink" title="标准用法"></a>标准用法</h5><pre><code>ReentrantLock lock = new ReentrantLock();
+try{
+    lock.lock();
+} 
+//一定要在finally里面unlock
+finally{
+  lock.unlock();
+}
+</code></pre><p>之所以叫做重入，是因为这种在一个线程内是可以反复进入的，也就是说可以 lock 多次，当然也要在 finally 块里面unlock 相同的次数</p>
+<h5 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h5><p>对于synchronized 一直等待锁来说，可重入锁提供了所中断的机制，当一个线程由于某种原因（死锁）迟迟获取不到锁的时候，可以通过中断线程（interrupt 方法）取消对锁的请求，这对于解决死锁很有帮助。</p>
+<pre><code>import java.util.concurrent.locks.ReentrantLock;
+
+public class TestLockInterruptibly {
+    private static ReentrantLock lock1 = new ReentrantLock();
+    private static ReentrantLock lock2 = new ReentrantLock();
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(new TestThread(true), &quot;线程1&quot;);
+        Thread t2 = new Thread(new TestThread(false), &quot;线程2&quot;);
+
+        t1.start();
+
+        //为演示效果而休眠
+        Thread.sleep(50);
+
+        t2.start();
+
+        //主线程休眠3秒
+        Thread.sleep(3000);
+
+        //t2发送中断，让等待lock1的t2响应该中断，取消对lock1的请求
+        //t2.interrupt();
+    }
+
+    static class TestThread implements Runnable{
+        //构造
+        public TestThread(boolean flag) {
+            this.flag = flag;
+        }
+        //true 先获取 lock1，再获取lock2
+        //false 先获取 lock2，再获取lock1
+        private boolean flag;
+        @Override
+        public void run() {
+
+            try{
+                if(flag) {
+                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock1 &quot;);
+                    lock1.lockInterruptibly();
+                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock1&quot;);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock2 &quot;);
+                    lock2.lockInterruptibly();
+                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock2&quot;);
+                } else {
+                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock2 &quot;);
+                    lock2.lockInterruptibly();
+                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock2&quot;);
+
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + &quot; 开始获取lock1 &quot;);
+                    lock1.lockInterruptibly();
+                    System.out.println(Thread.currentThread().getName() + &quot; 获取到了 lock1&quot;);
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                if(lock1.isHeldByCurrentThread()) {
+                    lock1.unlock();
+                }
+                if(lock2.isHeldByCurrentThread()){
+                    lock2.unlock();
+                }
+
+                System.out.println(Thread.currentThread().getName() + &quot;  &quot; + &quot;end...&quot;);
+            }
+        }
+    }
+}
+</code></pre><p>当t2不中断的时候，就回产生死锁，t1 等待 t2 持有的lock2， t2 等待 t1持有的lock1，结果如下图：</p>
+<img src="/2017/11/14/lock-reentrantLock/lock-ReentrantLock-dead-lock.png">
+<p>当 t2 中断的时候，发现t1 和 t2 都可以的退出，死锁被解决了</p>
+<img src="/2017/11/14/lock-reentrantLock/lock-ReentrantLock-dead-lock-resolve.png">
+<h5 id="tryLock"><a href="#tryLock" class="headerlink" title="tryLock"></a>tryLock</h5><p>上述的响应中断需要我们主动调用 中断方法 interrupt，使用tryLock 可以让线程限时等待，在指定时间内获取到锁后返回true，否则返回false，总之不会造成死锁。</p>
+<h5 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h5><p>还记得 与 synchronized 配套使用的 wait 和 notify，notifyAll 方法吗？  类似的重入提供了Condition ，和 lock 配套实现类似的操作。</p>
+<p>通过 Lock 的 newCondition() 方法可以生意一个与当前锁绑定的 Condition 对象，再利用如下的方法，可以实现类似 wait 和 notify的操作。</p>
+<p>下面是一个生产者消费者的例子：</p>
+<pre><code>import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class TestCondition {
+    private static ReentrantLock lock = new ReentrantLock();
+    private static Condition produceGood = lock.newCondition();
+    private static Condition consumeGood = lock.newCondition();
+    /* 是否有物品 */
+    private static boolean hasGood = false;
+
+    public static void main(String[] args) {
+        Thread producer = new Thread(new Producer(),&quot;生产者&quot;);
+        Thread consumer = new Thread(new Consumer(),&quot;消费者&quot;);
+
+        producer.start();
+        consumer.start();
+
+    }
+
+    /**生产者*/
+    static class Producer implements Runnable {
+        @Override
+        public void run() {
+            while(true) {
+                try{
+                    lock.lock();
+                    //如果有生产
+                    if (hasGood) {
+                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot; 物品等待被消费..&quot;);
+                        try {
+                            //等待物品被消费后，被消费者唤醒
+                            consumeGood.await();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    //没有物品，生产者则生产物品
+                    else {
+                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot; 生产了一个物品...&quot;);
+                        hasGood = true;
+                        //唤醒正在等待的消费者开始消费
+                        produceGood.signal();
+                    }
+                } finally {
+                    lock.unlock();
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    /*消费者*/
+    static class Consumer implements Runnable{
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    lock.lock();
+                    //如果有物品
+                    if(hasGood) {
+                        //消费物品
+                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot; 消费了物品...&quot;);
+                        hasGood = false;
+                        //唤醒等待生产者开始生产
+                        consumeGood.signal();
+                    }
+                    //没有物品
+                    else {
+                        System.out.println(&quot;线程 &quot; + Thread.currentThread().getName() + &quot;等待物品被生产..&quot;);
+                        try {
+                            //等待被生产者唤醒
+                            produceGood.await();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } finally {
+                    lock.unlock();
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+</code></pre><p>当然，也可以用 wait 和 notify实现</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'http://xuanzh.cc/2017/11/14/lock-reentrantLock/', // 可选。默认为 location.href
+        owner: 'zxure',
+        repo: 'blog_comments',
+        oauth: {
+            client_id: '4b3859c4906ac4d69eb1',
+            client_secret: '729e6f352073509282ae20ad585765d9f76aff54',
+        },
+    })
+    gitment.render('container')
+</script>
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/11/15/thread-pool/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/11/12/design-pattern-singleton/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     
