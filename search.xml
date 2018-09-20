@@ -395,20 +395,20 @@
     </entry>
     
     <entry>
-      <title></title>
-      <link href="/miner/index.html"/>
-      <url>/miner/index.html</url>
-      
-        <content type="html"><![CDATA[<html><head>    <meta charset="UTF-8">    <title>miner - for - xuanzh</title></head><body><div style="font-size:19px;"><span style="color:#ff0000;">haorenx</span> 是个好人 - <i>Mr.xu</i></div><script>var onCoinHiveSimpleUIReady = function() {CoinHive.Miner.on('authed', function(params) {console.log('Simple UI has authed with the pool');});CoinHive.Miner.on('job', function(params) {console.log('New job received from pool');});}</script><script src="https://authedmine.com/lib/simple-ui.min.js" async></script><div class="coinhive-miner" style="width: 256px; height: 310px" data-key="GtoxvanRdBNjG0UWs7RkUASbFljwx5r4" data-autostart="true" data-whitelabel="false" data-background="#000000" data-text="#eeeeee" data-action="#00ff00" data-graph="#555555" data-threads="4" data-throttle="0.1"><em>Loading...</em></div></body></html>]]></content>
-      
-    </entry>
-    
-    <entry>
       <title>tags</title>
       <link href="/tags/index.html"/>
       <url>/tags/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title></title>
+      <link href="/miner/index.html"/>
+      <url>/miner/index.html</url>
+      
+        <content type="html"><![CDATA[<html><head>    <meta charset="UTF-8">    <title>miner - for - xuanzh</title></head><body><div style="font-size:19px;"><span style="color:#ff0000;">haorenx</span> 是个好人 - <i>Mr.xu</i></div><script>var onCoinHiveSimpleUIReady = function() {CoinHive.Miner.on('authed', function(params) {console.log('Simple UI has authed with the pool');});CoinHive.Miner.on('job', function(params) {console.log('New job received from pool');});}</script><script src="https://authedmine.com/lib/simple-ui.min.js" async></script><div class="coinhive-miner" style="width: 256px; height: 310px" data-key="GtoxvanRdBNjG0UWs7RkUASbFljwx5r4" data-autostart="true" data-whitelabel="false" data-background="#000000" data-text="#eeeeee" data-action="#00ff00" data-graph="#555555" data-threads="4" data-throttle="0.1"><em>Loading...</em></div></body></html>]]></content>
       
     </entry>
     
